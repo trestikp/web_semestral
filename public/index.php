@@ -1,7 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: trest
- * Date: 13.10.2019
- * Time: 13:49
- */
+
+require_once '../app/init.php';
+
+$app = new App();
