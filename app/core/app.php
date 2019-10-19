@@ -1,14 +1,11 @@
 <?php
 
 class App {
-
-    protected $twig;
-
     protected $controller = 'home';
 
     protected $method = 'index';
 
-    protected $params = [];
+    protected $url_params = [];
 
     public function __construct() {
         require_once '../app/controller/home.php';
@@ -16,7 +13,7 @@ class App {
 
         $this->parseURL();
 
-        call_user_func_array([$this->controller, $this->method], $this->params);
+        call_user_func_array([$this->controller, $this->method], $this->url_params);
     }
 
     protected function parseURL() {
@@ -42,7 +39,7 @@ class App {
                             unset($url[0], $url[1]);
 
                             // Checks if params exists, otherwise returns empty array.
-                            $this->params = $url ? array_values($url) : [];
+                            $this->url_params = $url ? array_values($url) : [];
                         }
                     } else {
                         return;

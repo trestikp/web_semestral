@@ -1,13 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="cz">
 <div class="container">
 <head>
+    <meta charset="UTF-8">
     <title>Konference</title>
 
-    <link rel="stylesheet" href="css/bootstrap-4.3.1-dist/css/bootstrap.css">
-    <link rel="stylesheet" href="css/bootstrap-4.3.1-dist/css/bootstrap-grid.css">
-    <link rel="stylesheet" href="css/bootstrap-4.3.1-dist/css/bootstrap-reboot.css">
-    <link rel="stylesheet" href="css/default.css">
+    <link rel="stylesheet" href="/web_semestral/public/css/bootstrap-4.3.1-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="/web_semestral/public/css/bootstrap-4.3.1-dist/css/bootstrap-grid.css">
+    <link rel="stylesheet" href="/web_semestral/public/css/bootstrap-4.3.1-dist/css/bootstrap-reboot.css">
+    <link rel="stylesheet" href="/web_semestral/public/css/default.css">
 </head>
 
 <header class="border mt-2">
@@ -28,7 +29,9 @@
 <div class="row ml-0 mr-0 mt-2 mb-2" style="min-height: 400px">
     <div class="col-3">
         <nav class="nav nav-pills">
-            {{ nav | raw }}
+            <ul>
+                {{ nav | raw }}
+            </ul>
         </nav>
     </div>
 
