@@ -1,8 +1,19 @@
 <?php
 
-include_once '../app/controller/nav_subcontroller.php';
-include_once '../app/controller/form_subcontroller.php';
-include_once '../app/inc/db_info.php';
+//include_once '../app/controller/nav_subcontroller.php';
+//include_once '../app/controller/form_subcontroller.php';
+//include_once '../app/inc/db_info.php';
+
+//require_once "../app/controller/nav_subcontroller.php";
+//require_once "../app/controller/form_subcontroller.php";
+//require_once "../app/inc/db_info.php";
+
+require_once dirname(__FILE__).'/../controller/nav_subcontroller.php';
+require_once dirname(__FILE__)."/../controller/form_subcontroller.php";
+
+//require_once "/web_semestral/app/controller/nav_subcontroller.php";
+//require_once "/web_semestral/app/controller/form_subcontroller.php";
+//require_once "/web_semestral/app/inc/db_info.php";
 
 class Controller {
 
@@ -12,11 +23,20 @@ class Controller {
 
     protected $log_form;
 
+//    protected $log_error;
+
+    protected $params;
+
     protected $model;
 
     protected $db;
 
     public function __construct() {
+        $this->params = array();
+        $this->params['obsah'] = null;
+        $this->params['nav'] = null;
+        $this->params['log_form'] = null;
+        $this->params['log_error'] = null;
         $this->nav = new Nav();
         $this->log_form = new LoginForm();
         $this->loadTemplate();
@@ -29,9 +49,9 @@ class Controller {
         $this->twig = new Twig\Environment($loader);
     }
 
-    protected function render($params) {
-        echo $this->twig->render('main_template.html', array('obsah' => $params['obsah'], 'nav' => $params['nav'],
-                                 'log_form' => $params['log_form']));
+    protected function render() {
+        echo $this->twig->render('main_template.html', array('obsah' => $this->params['obsah'], 'nav' => $this->params['nav'],
+                                 'log_form' => $this->params['log_form'], 'log_error' => $this->params['log_error']));
     }
 
     protected function createModel() {
@@ -45,5 +65,4 @@ class Controller {
         require '../app/model/model.php';
         $this->model = new Model($this->db);
     }
-
 }
