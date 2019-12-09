@@ -8,8 +8,9 @@
 //require_once "../app/controller/form_subcontroller.php";
 //require_once "../app/inc/db_info.php";
 
-require_once dirname(__FILE__).'/../controller/nav_subcontroller.php';
+require_once dirname(__FILE__)."/../controller/nav_subcontroller.php";
 require_once dirname(__FILE__)."/../controller/form_subcontroller.php";
+require_once dirname(__FILE__)."/../controller/login_controller.php";
 
 //require_once "/web_semestral/app/controller/nav_subcontroller.php";
 //require_once "/web_semestral/app/controller/form_subcontroller.php";
@@ -30,6 +31,8 @@ class Controller {
     protected $model;
 
     protected $db;
+
+    protected $login;
 
     public function __construct() {
         $this->params = array();
