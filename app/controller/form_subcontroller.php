@@ -13,6 +13,10 @@ class LoginForm {
     }
 
     public function change_to_logged($username) {
-        $this->log_form = "<p>Přihlášen uživatel: ".$username."</p>";
+        $this->log_form = "<dl>
+                                <dt><p>Přihlášený uživatel: ".$username."</p></dt>
+                                <dt><input type='button' name='logout' id='logout' value='Odhlásit'
+                                 onclick='logOut()'></dt>
+                           </dl>";
     }
 }

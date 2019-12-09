@@ -72,8 +72,8 @@ class Controller {
 
     protected function prepare_parts() {
         // generate appropriate nav
-        if (isset($_SESSION["logged"])) {
-            if ($_SESSION["logged"] == true) {
+        if (isset($_SESSION["logged"]) && $_SESSION["logged"] == true) {
+//            if ($_SESSION["logged"] == true) {
                 switch ($_SESSION["role"]) {
                     // if author is logged in
                     case 1: $this->nav->create_nav(1); break;
@@ -82,17 +82,17 @@ class Controller {
                     // admin logged in
                     case 3: $this->nav->create_nav(3); break;
                 }
-            }
+//            }
         } else {
             $this->nav->create_nav(0);
         }
         $this->params['nav'] = $this->nav->get_nav();
 
         // generate appropriate "form"
-        if(isset($_SESSION["logged"])) {
-            if ($_SESSION["logged"] == true) {
+        if(isset($_SESSION["logged"]) && $_SESSION["logged"] == true) {
+//            if ($_SESSION["logged"] == true) {
                 $this->log_form->change_to_logged($_SESSION["username"]);
-            }
+//            }
         } else {
             $this->log_form->__construct();
         }

@@ -31,7 +31,7 @@ function submitForm(action) {
             // console.log(re);
         }).fail(function () {
             alert("FUCK");
-        })
+        });
 
         // $.ajax("../login", {
         //     type: "POST",
@@ -46,4 +46,10 @@ function submitForm(action) {
         window.location.replace("/web_semestral/public/login_controller/log_in_user");
         window.location.replace(cur_url);
     }
+}
+
+function logOut() {
+    let cur_url = window.location.href;
+    window.location.replace("/web_semestral/public/login_controller/log_out_user");
+    window.location.replace(cur_url);
 }

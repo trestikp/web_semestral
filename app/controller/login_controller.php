@@ -17,14 +17,15 @@ class Login_controller extends Controller {
         }
         if ($rc == 0) {
             echo "YES";
-//            session_start();
         }
     }
 
     function log_in_user() {
         header("Refresh:0");
-//        echo "logging in";
-//        $this->prepare_parts();
-//        $this->render();
+    }
+
+    function log_out_user() {
+        $_SESSION["logged"] = false;
+        header("Refresh:0");
     }
 }

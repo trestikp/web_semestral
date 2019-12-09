@@ -23,6 +23,8 @@ class Nav {
             $is_valid = false;
         }
 
+        echo "creating nav for user $user";
+
 
         // TODO: if the number is invalid - DO NOT change the nav - not logged user could get admin nav!!
         // basically useless if, 0 is (should be) always done
