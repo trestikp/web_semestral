@@ -11,4 +11,8 @@ class LoginForm {
     public function get_log_form() {
         return $this->log_form;
     }
+
+    public function change_to_logged($username) {
+        $this->log_form = "<p>Přihlášen uživatel: ".$username."</p>";
+    }
 }

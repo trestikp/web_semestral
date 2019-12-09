@@ -17,8 +17,10 @@ class Model {
 //            error_log($err[2]);
 //        }
 
-        $statement->execute(array(':username'=>$username));
-        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        $statement->execute();
+        $result = $statement->fetchAll();
+//        $statement->execute(array(':username'=>$username));
+//        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
 
 //        echo $sql."\n";
 //        print_r($result);
@@ -34,6 +36,7 @@ class Model {
                 $_SESSION["username"] = $result[0]["username"];
                 $_SESSION["role"] = $result[0]["role"];
                 $_SESSION["email"] = $result[0]["email"];
+                $_SESSION["logged"] = true;
                 // for testing
                 return 0;
             } else {

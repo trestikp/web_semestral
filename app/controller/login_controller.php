@@ -1,6 +1,10 @@
 <?php
 
-class Login extends Controller {
+class Login_controller extends Controller {
+
+    public function index() {
+        echo "YOU ARE NOT SUPPOSED TO BE THERE (login_controller/index)";
+    }
 
     public function verify() {
         $username = $_POST["username"];
@@ -9,12 +13,18 @@ class Login extends Controller {
         $rc = $this->model->login($username, $password);
 
         if ($rc == 3) {
-            echo "NO\n";
+            echo "NO";
         }
         if ($rc == 0) {
-            echo "YES\n";
+            echo "YES";
+//            session_start();
         }
+    }
 
-        echo "konec\n";
+    function log_in_user() {
+        header("Refresh:0");
+//        echo "logging in";
+//        $this->prepare_parts();
+//        $this->render();
     }
 }

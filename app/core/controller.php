@@ -2,6 +2,7 @@
 
 //include_once '../app/controller/nav_subcontroller.php';
 //include_once '../app/controller/form_subcontroller.php';
+//include_once '../app/controller/login_controller.php';
 //include_once '../app/inc/db_info.php';
 
 //require_once "../app/controller/nav_subcontroller.php";
@@ -31,8 +32,6 @@ class Controller {
     protected $model;
 
     protected $db;
-
-//    protected $login;
 
     public function __construct() {
         $this->params = array();
@@ -69,5 +68,34 @@ class Controller {
 
         require_once '../app/model/model.php';
         $this->model = new Model($this->db);
+    }
+
+    protected function prepare_parts() {
+        // generate appropriate nav
+        if (isset($_SESSION["logged"])) {
+            if ($_SESSION["logged"] == true) {
+                switch ($_SESSION["role"]) {
+                    // if author is logged in
+                    case 1: $this->nav->create_nav(1); break;
+                    // if reviewer is logged in
+                    case 2: $this->nav->create_nav(2); break;
+                    // admin logged in
+                    case 3: $this->nav->create_nav(3); break;
+                }
+            }
+        } else {
+            $this->nav->create_nav(0);
+        }
+        $this->params['nav'] = $this->nav->get_nav();
+
+        // generate appropriate "form"
+        if(isset($_SESSION["logged"])) {
+            if ($_SESSION["logged"] == true) {
+                $this->log_form->change_to_logged($_SESSION["username"]);
+            }
+        } else {
+            $this->log_form->__construct();
+        }
+        $this->params['log_form'] = $this->log_form->get_log_form();
     }
 }
