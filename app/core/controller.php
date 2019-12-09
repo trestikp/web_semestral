@@ -32,7 +32,7 @@ class Controller {
 
     protected $db;
 
-    protected $login;
+//    protected $login;
 
     public function __construct() {
         $this->params = array();
@@ -42,6 +42,7 @@ class Controller {
         $this->params['log_error'] = null;
         $this->nav = new Nav();
         $this->log_form = new LoginForm();
+        $this->createModel();
         $this->loadTemplate();
     }
 
@@ -58,14 +59,15 @@ class Controller {
     }
 
     protected function createModel() {
+        require_once "../app/inc/db_info.php";
         try {
-            $this->db = new PDO("mysql:host".DB_HOST.";dbname:".DB_NAME, DB_USER, DB_PASSWORD);
+            $this->db = new PDO("mysql:host=".DB_HOST.";dbname=".DB_NAME, DB_USER, DB_PASSWORD);
         } catch (PDOException $e) {
-            echo "Failed to connect to database" . $e->getMessage();
+            echo "Database connection failed: " . $e->getMessage();
             return;
         }
 
-        require '../app/model/model.php';
+        require_once '../app/model/model.php';
         $this->model = new Model($this->db);
     }
 }
