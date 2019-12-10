@@ -57,6 +57,14 @@ class Controller {
                                  'log_form' => $this->params['log_form'], 'log_error' => $this->params['log_error']));
     }
 
+    protected function render_log_error($error) {
+        $template = $this->twig->load('main_template.html');
+//        echo $template->renderBlock('log_error', ['log_error' => $error]);
+//        $template->render(['log_error' => $this->params['log_error']]);
+        $template->render(['log_error' => $error]);
+//        echo $this->twig->render('main_template.html', array('log_error' => $this->params['log_error']));
+    }
+
     protected function createModel() {
         require_once "../app/inc/db_info.php";
         try {

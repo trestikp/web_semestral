@@ -45,4 +45,11 @@ class Model {
             }
         }
     }
+
+    public function submit_post($title, $description, $file) {
+        $sql = "INSERT INTO post(title, text, file) VALUES ('$title', '$description', '$file')";
+        $this->db->exec($sql);
+//        $statement = $this->db->prepare($sql);
+//        $statement->execute();
+    }
 }

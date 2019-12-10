@@ -23,18 +23,19 @@ class Nav {
             $is_valid = false;
         }
 
-        echo "creating nav for user $user";
+//        echo "creating nav for user $user\n";
 
 
         // TODO: if the number is invalid - DO NOT change the nav - not logged user could get admin nav!!
         // basically useless if, 0 is (should be) always done
         if(0 <= $user) {
             $this->add_nav_element('/web_semestral/public/home/index', 'Úvod');
+            $this->add_nav_element('/web_semestral/public/published/index', 'Příspěvky');
             $this->add_nav_element('/web_semestral/public/rules/index', 'Pravidla');
         }
 
         if(1 <= $user) {
-            $this->add_nav_element('/web_semestral/public/pridani/index', 'Přidání příspěvku');
+            $this->add_nav_element('/web_semestral/public/post/index', 'Přidat příspěvek');
         }
 
         if(2 <= $user) {

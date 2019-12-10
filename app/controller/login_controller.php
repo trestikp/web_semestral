@@ -13,10 +13,14 @@ class Login_controller extends Controller {
         $rc = $this->model->login($username, $password);
 
         if ($rc == 3) {
-            echo "NO";
+            $this->params["log_error"] = "<p>Incorrect password!</p>";
+//            $this->render();
+//            $this->render_log_error("<p>Incorrect password!</p>");
         }
-        if ($rc == 0) {
-            echo "YES";
+        if ($rc == 1) {
+            $this->params["log_error"] = "<p>User doesn't exist!</p>";
+//            $this->render();
+//            $this->render_log_error("<p>User doesn't exist!</p>");
         }
     }
 
