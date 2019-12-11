@@ -9,8 +9,30 @@ class Published extends Controller {
         $this->render();
     }
 
+    public function read_post() {
+        $this->prepare_parts();
+
+        if (empty($this->url_params)) {
+            //TODO: some error
+        }
+
+        $posts = $this->model->get_post_by_title($this->url_params[0]);
+
+
+        //presuming only one post with the title name
+        $author = $posts[0]["username"];
+        $title = $posts[0]["title"];
+        // TODO: PDF to text
+        $text = $posts[0]["text"];
+
+        $html = $this->twig->render('post_reader.html', ["post_title" => $title,
+                                    "author" => $author, "post_text" => $text]);
+        $this->params['obsah'] = $html;
+        $this->render();
+    }
+
     private function construct_posts() {
-        $html = "\n<h3>Vítej na webu konference o hrách!</h3><br>\n";
+        $html = "\n<h3>Seznam příspěvků</h3><br>\n";
         $posts = $this->model->get_all_published_posts();
 
         if (empty($posts)) {
@@ -19,7 +41,7 @@ class Published extends Controller {
 
         $html .= "\n<table class='table table-striped'>\n<tbody>\n";
         foreach ($posts as $item){
-            $html .= "<tr><th scope='row'><a href='#'>".$item['title']."</a></th></tr>\n";
+            $html .= "<tr><th scope='row'><a href='read_post/".$item['title']."'>".$item['title']."</a></th></tr>\n";
         }
         $html .= "</tbody>\n</table>\n";
 

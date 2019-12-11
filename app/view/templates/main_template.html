@@ -8,6 +8,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script type="text/javascript" src="/web_semestral/app/controller/js/login_form_actions.js"></script>
     <script type="text/javascript" src="/web_semestral/app/controller/js/post_form_action.js"></script>
+    <script type="text/javascript" src="/web_semestral/app/controller/js/active_nav_link.js"></script>
     <!--<script-->
             <!--src="https://code.jquery.com/jquery-3.4.1.js"-->
             <!--integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="-->
@@ -37,7 +38,7 @@
 <div class="row ml-0 mr-0 mt-2 mb-2" style="min-height: 400px">
     <div class="col-3">
         <nav class="nav nav-pills">
-            <ul>
+            <ul id="navigation">
                 {{ nav | raw }}
             </ul>
         </nav>

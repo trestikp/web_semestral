@@ -84,4 +84,15 @@ class Model {
 
         return $result;
     }
+
+    public function get_post_by_title($title) {
+        $sql = "SELECT a.username, p.title, p.text, p.file FROM posts as p, users as a 
+                WHERE title = \"$title\" AND a.id = p.author";
+//        $sql = "SELECT author.username, title, text, file FROM posts, author WHERE title = \"$title\"";
+        $statement = $this->db->prepare($sql);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
 }

@@ -55,6 +55,6 @@ class Nav {
 
     private function add_nav_element($href, $title) {
         $is_active = '';
-        $this->nav = $this->nav."<li class='nav-item list-unstyled'><a class='nav-link $is_active' href=$href>$title</a></li>\n";
+        $this->nav = $this->nav."<li class='page nav-item list-unstyled'><a id='link' class='nav-link $is_active' href=$href>$title</a></li>\n";
     }
 }

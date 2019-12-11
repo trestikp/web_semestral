@@ -27,6 +27,8 @@ class Controller {
 
 //    protected $log_error;
 
+    public $url_params = [];
+
     protected $params;
 
     protected $model;

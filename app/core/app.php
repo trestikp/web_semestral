@@ -16,23 +16,32 @@ class App {
 
     protected function parseURL() {
         if(isset($_GET['url'])) {
-            $url = explode('/', filter_var(rtrim($_GET['url'], '/'), FILTER_SANITIZE_URL));
+//            echo $_GET['url']."\n";
+//            echo urldecode($_SERVER['REQUEST_URI']);
+
+//            $url = explode('/', filter_var(rtrim($_GET['url'], '/')));
+            $url = explode('/', filter_var(rtrim(urldecode($_SERVER['REQUEST_URI']), '/')));
+
+            // Removing unnecessary information from url
+            unset($url[0], $url[1], $url[2]);
 
             // If controller name is set, checks for existence. Else returns (home stays as default value).
             // Maybe not needed, since checking if url is set?*
-            if(isset($url[0])) {
-                if(file_exists('../app/controller/'.$url[0].'.php')) {
-                    $this->controller = $url[0];
-                    unset($url[0]);
+            if(isset($url[3])) {
+                if(file_exists('../app/controller/'.$url[3].'.php')) {
+                    $this->controller = $url[3];
+//                    echo $this->controller;
+                    unset($url[3]);
 
                     // If controller is set and exists, checks for existence of method. If second part of url
                     // isn't set, returns, because parameters are not expected.
-                    if(isset($url[1])) {
-                        $this->method = $url[1];
-                        unset($url[1]);
+                    if(isset($url[4])) {
+                        $this->method = $url[4];
+                        unset($url[4]);
 
                         // The rest of the array as params
                         $this->url_params = $url ? array_values($url) : [];
+//                        print_r($this->url_params);
                     } else {
                         /* If method isn't set assume index (default) method */
                         $this->method = 'index';
@@ -62,5 +71,8 @@ class App {
         }
 
         /* Parameter handling? */
+        if (!empty($this->url_params)) {
+            $this->controller->url_params = $this->url_params;
+        }
     }
 }
