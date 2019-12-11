@@ -19,9 +19,30 @@ class Post extends Controller {
         $first = $_GET['post_name'];
         $second = $_GET['post_desc'];
 
-        echo "<script>console.log('hello?')</script>";
-        echo "submitting";
+        //TODO: get file!
+        $this->model->submit_post($first, $second, '');
+    }
 
-        $this->model->submit_form($first, $second, null);
+    public function submit_success() {
+        if ($_SESSION["logged"] == false) {
+            header('Location: /web_semestral/public/home/index');
+        }
+
+        $this->prepare_parts();
+        $str = '/web_semestral/public/post/index';
+        $html = "<dl>
+                    <dd>
+                        <p>Váš příspěvek byl úspěšně odeslán.<br>
+                        Stav zveřejnění příspěvku můžete vidět v sekci \"Mé příspěvky\"</p>
+                    </dd>
+                    <dt>
+                        <dd>
+                            <input class='float-left' id='my_posts_red' type='button' value='Mé příspěvky'>
+                            <input class='float-right' id='new_post_red' type='button' value='Napsat další příspěvek'>
+                        </dd>
+                    </dt>
+                 </dl>";
+        $this->params['obsah'] = $html;
+        $this->render();
     }
 }

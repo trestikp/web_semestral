@@ -32,10 +32,12 @@ class Nav {
             $this->add_nav_element('/web_semestral/public/home/index', 'Úvod');
             $this->add_nav_element('/web_semestral/public/published/index', 'Příspěvky');
             $this->add_nav_element('/web_semestral/public/rules/index', 'Pravidla');
+            $this->add_nav_element('/web_semestral/public/us/index', 'O nás');
         }
 
         if(1 <= $user) {
             $this->add_nav_element('/web_semestral/public/post/index', 'Přidat příspěvek');
+            $this->add_nav_element('/web_semestral/public/my_posts/index', 'Mé příspěvky');
         }
 
         if(2 <= $user) {
