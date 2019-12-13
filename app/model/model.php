@@ -95,4 +95,25 @@ class Model {
 
         return $result;
     }
+
+    public function username_occupied($username) {
+        $sql = "SELECT * FROM users WHERE username=\"$username\"";
+        $statement = $this->db->prepare($sql);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        if (count($result) >= 1) {
+            // username already exists
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function add_user($username, $password, $email) {
+        // no need to set role -> role is automatically set to 1 (author) by the db
+        $sql = "INSERT INTO users(username, password, email) VALUES (\"$username\", \"$password\", \"$email\")";
+        $statement = $this->db->prepare($sql);
+        $statement->execute();
+    }
 }

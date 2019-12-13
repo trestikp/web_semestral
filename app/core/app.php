@@ -20,6 +20,7 @@ class App {
 //            echo urldecode($_SERVER['REQUEST_URI']);
 
 //            $url = explode('/', filter_var(rtrim($_GET['url'], '/')));
+            // Need to use $_SERVER['REQUEST_URI'] because $_GET['url'] ignores dots ('.') (atleast at the end)
             $url = explode('/', filter_var(rtrim(urldecode($_SERVER['REQUEST_URI']), '/')));
 
             // Removing unnecessary information from url

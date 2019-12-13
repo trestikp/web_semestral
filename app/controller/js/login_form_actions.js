@@ -2,7 +2,7 @@ function submitForm(action) {
     if(action == "login") {
         $.ajax("/web_semestral/public/login_controller/verify", {
             type: "POST",
-            data: $("#login_form").serialize(),
+            data: $("#login_form").serialize()
         }).done(function (re) {
             // alert(re);
             let cur_url = window.location.href;
@@ -15,11 +15,17 @@ function submitForm(action) {
         });
 
     } else if (action == "register") {
-        let cur_url = window.location.href;
-        window.location.replace("/web_semestral/public/login_controller/log_in_user");
-        window.location.replace(cur_url);
+        window.location.replace("/web_semestral/public/registration/index");
     }
 }
+
+$(document).on('click', '#reg_cancel', function () {
+    // WTF goes back to random page ??
+    window.history.back();
+    // console.log(window .history.toString());
+    // window.history.back();
+    // window.history.back(-1);
+});
 
 function logOut() {
     let cur_url = window.location.href;
