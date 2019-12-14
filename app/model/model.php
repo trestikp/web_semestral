@@ -56,7 +56,7 @@ class Model {
     }
 
     public function get_all_published_posts() {
-        $sql = "SELECT author, published, title FROM posts WHERE published = 1";
+        $sql = "SELECT author, published, title, username FROM posts, users WHERE published = 1 AND users.id = author";
         $statement = $this->db->prepare($sql);
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -65,7 +65,7 @@ class Model {
     }
 
     public function get_users_posts() {
-        $sql = "SELECT title FROM posts WHERE author = ".$_SESSION['id'];
+        $sql = "SELECT title, state, published FROM posts WHERE author = ".$_SESSION['id'];
         $statement = $this->db->prepare($sql);
         $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -76,7 +76,8 @@ class Model {
     public function get_posts_to_review() {
 //        $id = $_SESSION['id'];
 //        $sql = "SELECT p.title FROM posts as p, review_queue as rq WHERE p.id=rq.post AND rq.publish=0 AND rq.reviewer=".$id;
-        $sql = "SELECT p.title FROM posts as p, review_queue as rq WHERE p.id=rq.post AND rq.publish=0 AND rq.reviewer=".$_SESSION['id'];
+        $sql = "SELECT p.title FROM posts as p, review_queue as rq WHERE
+                p.id=rq.post AND rq.publish=0 AND rq.reviewer=".$_SESSION['id'];
         $statement = $this->db->prepare($sql);
 //        $statement->bindParam(':id', $_SESSION['id']);
         $statement->execute();

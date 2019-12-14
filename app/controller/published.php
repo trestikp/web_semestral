@@ -41,7 +41,10 @@ class Published extends Controller {
 
         $html .= "\n<table class='table table-striped'>\n<tbody>\n";
         foreach ($posts as $item){
-            $html .= "<tr><th scope='row'><a href='read_post/".$item['title']."'>".$item['title']."</a></th></tr>\n";
+            $html .= "<tr>
+                        <td scope='row'><a href='read_post/".$item['title']."'>".$item['title']."</a></td>
+                        <td scope='row'>by: ".$item['username']."</td>
+                      </tr>\n";
         }
         $html .= "</tbody>\n</table>\n";
 

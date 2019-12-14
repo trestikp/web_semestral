@@ -16,11 +16,49 @@ class Post extends Controller {
     }
 
     public function submit_post() {
-        $first = $_GET['post_name'];
-        $second = $_GET['post_desc'];
+        $first = $_POST['post_name'];
+        $second = $_POST['post_desc'];
 
-        //TODO: get file!
-        $this->model->submit_post($first, $second, '');
+        if ($first == "" || $first == null) {
+            die(json_encode(array('message' => 'TITLE_ERROR', 'code' => 1)));
+        }
+
+        if ($second == "" || $first == null) {
+            die(json_encode(array('message' => 'TEXT_ERROR', 'code' => 2)));
+        }
+
+        $filename = $_FILES['pdf_input']['name'];
+
+        if ($filename == "" || $filename == null) {
+            $this->model->submit_post($first, $second, '');
+            //successful die
+            die(json_encode(array('message' => 'TEXT_ERROR', 'code' => 0)));
+        }
+
+        $destination = '../app/uploads/'.$filename;
+        $extension = pathinfo($filename, PATHINFO_EXTENSION);
+
+        $file = $_FILES['pdf_input']['tmp_name'];
+        $size = $_FILES['pdf_input']['size'];
+
+        if ($extension != 'pdf') {
+//            header('HTTP/1.1 500 Internal Server Error');
+//            header('Content-Type: application/json; charset=UTF-8');
+            die(json_encode(array('message' => 'FILE_TYPE_ERROR', 'code' => 3)));
+        } elseif ($size > 1000000) {
+            die(json_encode(array('message' => 'FILE_SIZE_ERROR', 'code' => 4)));
+        } else {
+            if (move_uploaded_file($file, $destination)) {
+                $this->model->submit_post($first, $second, $filename);
+                //successful die
+                die(json_encode(array('message' => 'TEXT_ERROR', 'code' => 0)));
+            } else {
+                die(json_encode(array('message' => 'FILE_UPLOAD_ERROR', 'code' => 5)));
+            }
+        }
+
+
+//        $this->model->submit_post($first, $second, $filename);
     }
 
     public function submit_success() {
@@ -29,7 +67,7 @@ class Post extends Controller {
         }
 
         $this->prepare_parts();
-        $str = '/web_semestral/public/post/index';
+//        $str = '/web_semestral/public/post/index';
         $html = "<dl>
                     <dd>
                         <p>Váš příspěvek byl úspěšně odeslán.<br>
