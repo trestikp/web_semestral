@@ -24,13 +24,14 @@ class Published extends Controller {
         $title = $posts[0]["title"];
         $text = $posts[0]["text"];
 
-        $file_html = '<div><b>Soubor pdf: </b>';
+        $file_html = '';
         if ($posts[0]['file'] != '') {
+            $file_html .= '<div><b>Soubor pdf: </b>';
             $file = $posts[0]["file"];
 
             if (file_exists("../app/uploads/$file"))
                 $file_html .= "<embed src=\"/web_semestral/app/uploads/$file\" type='application/pdf'
-                                width='100%' height='500px'/>";
+                                width='100%' height='1080px'/>";
             else
                 $file_html .= "Tento příspěvek měl připnutý pdf soubor.
                                     Tento soubor se ale bohužel nepodařilo otevřít.";
