@@ -39,11 +39,7 @@ $(document).on('click', '#post_action', function() {
 });
 
 $(document).on('click', '#my_posts_red', function() {
-    // $.ajax("/web_semestral/public/");
-    //     .done(function () {
-    //     // window.location.replace("/web_semestral/public/post/submit_success");
-    //     // console.log($('#post_form').serialize());
-    // });
+    window.location.replace("/web_semestral/public/my_posts/index");
 });
 
 $(document).on('click', '#new_post_red', function() {

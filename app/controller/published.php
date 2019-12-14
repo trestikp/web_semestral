@@ -19,14 +19,27 @@ class Published extends Controller {
         $posts = $this->model->get_post_by_title($this->url_params[0]);
 
 
-        //presuming only one post with the title name
+        //presuming only one post with the same title name and author
         $author = $posts[0]["username"];
         $title = $posts[0]["title"];
-        // TODO: PDF to text
         $text = $posts[0]["text"];
 
+        $file_html = '<div><b>Soubor pdf: </b>';
+        if ($posts[0]['file'] != '') {
+            $file = $posts[0]["file"];
+
+            if (file_exists("../app/uploads/$file"))
+                $file_html .= "<embed src=\"/web_semestral/app/uploads/$file\" type='application/pdf'
+                                width='100%' height='500px'/>";
+            else
+                $file_html .= "Tento příspěvek měl připnutý pdf soubor.
+                                    Tento soubor se ale bohužel nepodařilo otevřít.";
+        }
+        $file_html .= '</div>';
+
         $html = $this->twig->render('post_reader.html', ["post_title" => $title,
-                                    "author" => $author, "post_text" => $text]);
+                                    "author" => $author, "post_text" => $text,
+                                    "post_file" => $file_html]);
         $this->params['obsah'] = $html;
         $this->render();
     }
