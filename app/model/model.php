@@ -150,4 +150,40 @@ class Model {
         $statement = $this->db->prepare($sql);
         $statement->execute();
     }
+
+    public function get_review_assignment_posts() {
+//        $sql = "SELECT p.title, p.id FROM posts AS p, review_queue AS rq WHERE
+//                (SELECT COUNT(*) FROM review_queue WHERE post=p.id)<=3 AND rq.id=p.id AND p.published=0";
+        $sql = "SELECT p.title, p.id FROM posts AS p, review_queue AS rq WHERE
+                (SELECT COUNT(*) FROM review_queue WHERE post=p.id)>0 AND
+                (SELECT COUNT(*) FROM review_queue WHERE post=p.id)<=3 AND
+                rq.id=p.id AND p.published=0";
+        $statement = $this->db->prepare($sql);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $results;
+    }
+
+    public function get_reviewers_of_post($p_id) {
+        $sql = "SELECT u.username, rq.reviewed FROM users AS u, review_queue AS rq WHERE
+                u.id=rq.reviewer AND rq.post=$p_id";
+        $statement = $this->db->prepare($sql);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $results;
+    }
+
+    //SELECT DISTINCT u.username FROM users AS u, review_queue AS rq WHERE u.id NOT IN (SELECT DISTINCT u.id FROM users AS u, posts AS p, review_queue AS rq WHERE rq.post=3 AND u.id=rq.reviewer) AND u.role>1
+    public function get_free_reviewers($p_id) {
+        $sql = "SELECT DISTINCT u.username, u.id FROM users AS u, review_queue AS rq WHERE
+                u.id NOT IN (SELECT DISTINCT u.id FROM users AS u, posts AS p, review_queue AS rq WHERE
+                rq.post=$p_id AND u.id=rq.reviewer) AND u.role>1";
+        $statement = $this->db->prepare($sql);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $results;
+    }
 }

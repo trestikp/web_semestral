@@ -60,6 +60,8 @@ class Review extends Controller {
         $this->params['obsah'] = $html;
         $this->render();
 
+        // TODO: ??? if time - add fill form for update
+
 //        if ($this->model->is_reviewed($_SESSION['id'], $_SESSION['p_id'])) {
 //            echo "sc";
 //        }

@@ -45,7 +45,10 @@ class Nav {
         }
 
         if(3 <= $user) {
-            $this->add_nav_element('/web_semestral/public/user_mngmnt/index', 'Spravuj uživatele');
+            $this->add_nav_element('/web_semestral/public/r_assignment/index',
+                                    'Přiřaď recenzenty k příspěvkům');
+            $this->add_nav_element('/web_semestral/public/r_mngmnt/index', 'Správa příspěvků');
+            $this->add_nav_element('/web_semestral/public/user_mngmnt/index', 'Správa uživatelů');
         }
     }
 
