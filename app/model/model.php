@@ -152,12 +152,12 @@ class Model {
     }
 
     public function get_review_assignment_posts() {
-//        $sql = "SELECT p.title, p.id FROM posts AS p, review_queue AS rq WHERE
-//                (SELECT COUNT(*) FROM review_queue WHERE post=p.id)<=3 AND rq.id=p.id AND p.published=0";
-        $sql = "SELECT p.title, p.id FROM posts AS p, review_queue AS rq WHERE
-                (SELECT COUNT(*) FROM review_queue WHERE post=p.id)>0 AND
-                (SELECT COUNT(*) FROM review_queue WHERE post=p.id)<=3 AND
-                rq.id=p.id AND p.published=0";
+//        SELECT p.title, p.id, COUNT(*) FROM posts AS p JOIN review_queue AS rq ON rq.post=p.id
+//	    GROUP BY p.id
+//        HAVING COUNT(*)<3
+        $sql = "SELECT p.title, p.id, COUNT(*) FROM posts AS p JOIN review_queue AS rq ON rq.post=p.id
+	            GROUP BY p.id
+                HAVING COUNT(*)<3";
         $statement = $this->db->prepare($sql);
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -191,5 +191,23 @@ class Model {
         $sql = "INSERT INTO review_queue(reviewer, post) VALUES ($r_id, $p_id)";
         $statement = $this->db->prepare($sql);
         $statement->execute();
+    }
+
+    public function get_unpublished_reviewed() {
+//        SELECT DISTINCT p.title, p.id, COUNT(*) FROM posts AS p JOIN review_queue AS rq ON rq.post=p.id WHERE
+//		rq.reviewed=1 AND
+//        p.published=0
+//        GROUP BY rq.post
+//        HAVING COUNT(*) >=3
+        $sql = "SELECT DISTINCT p.title, p.id, COUNT(*) FROM posts AS p JOIN review_queue AS rq ON rq.post=p.id WHERE
+		rq.reviewed=1 AND
+        p.published=0
+        GROUP BY rq.post
+        HAVING COUNT(*) >=3";
+        $statement = $this->db->prepare($sql);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $results;
     }
 }
