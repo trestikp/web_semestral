@@ -35,14 +35,14 @@ class R_assignment extends Controller {
                     }
                 } else {
                     $free_r = $this->model->get_free_reviewers($item['id']);
-                    $html .= "<td>\n<select id='r_select".$i."'>\n";
+                    $html .= "<td>\n<select id='r_".$item['id']."_select".$i."'>\n";
                               $html .= "<option disabled selected value> -- zvolte -- </option>";
                               foreach($free_r as $rec) {
                                   $html .= "<option value=\"".$rec['id']."\">".$rec['username']."</option>\n";
                               }
                     $html .= "</select>\n</td>\n";
                     $html .= "<td>\n
-                                <input type='button' id='r_button".$i."' value='Přidat recenzeta'>
+                                <input class='r_adding' type='button' id='r_".$item['id']."_button".$i."' value='Přidat recenzeta'>
                               </td>\n";
                 }
                 $html .= "</tr>\n";
@@ -52,5 +52,12 @@ class R_assignment extends Controller {
         $html .= "</tbody>\n</table>\n";
 
         return $html;
+    }
+
+    public function add_review_queue() {
+        $p_id = $_POST['p_id'];
+        $r_id = $_POST['r_id'];
+
+        $this->model->assign_reviewer($r_id, $p_id);
     }
 }

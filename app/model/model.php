@@ -186,4 +186,10 @@ class Model {
 
         return $results;
     }
+
+    public function assign_reviewer($r_id, $p_id) {
+        $sql = "INSERT INTO review_queue(reviewer, post) VALUES ($r_id, $p_id)";
+        $statement = $this->db->prepare($sql);
+        $statement->execute();
+    }
 }
