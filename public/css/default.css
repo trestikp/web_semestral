@@ -8,3 +8,7 @@
 textarea {
     resize: none;
 }
+
+.selector {
+    margin-top: 3px;
+}

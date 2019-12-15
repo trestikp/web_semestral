@@ -37,11 +37,12 @@ class Review extends Controller {
         $this->prepare_parts();
 
         $posts = $this->model->get_post_by_title($this->url_params[0]);
+        $_SESSION['p_id'] = $posts[0]['id'];
 
         $file_html = '';
         if ($posts[0]['file'] != '') {
             $file_html .= '<div><b>Soubor pdf: </b>';
-            $file = $posts[0]["file"];
+            $file = $posts[0]['file'];
 
             if (file_exists("../app/uploads/$file"))
                 $file_html .= "<embed src=\"/web_semestral/app/uploads/$file\" type='application/pdf'
@@ -58,10 +59,28 @@ class Review extends Controller {
 
         $this->params['obsah'] = $html;
         $this->render();
+
+//        if ($this->model->is_reviewed($_SESSION['id'], $_SESSION['p_id'])) {
+//            echo "sc";
+//        }
     }
 
     public function submit_review() {
+        $c1 = $_POST['criterium_1'];
+        $c2 = $_POST['criterium_2'];
+        $c3 = $_POST['criterium_3'];
+        $ol = $_POST['overall'];
+        $text = $_POST['review_comment'];
 
+        if ($this->model->is_reviewed($_SESSION['id'], $_SESSION['p_id'])) {
+            $this->model->update_review($c1, $c2, $c3, $ol, $_SESSION['p_id'], $text);
+        } else {
+            $this->model->add_review($c1, $c2, $c3, $ol, $_SESSION['p_id'], $text);
+            $this->model->set_as_reviewed($_SESSION['id'], $_SESSION['p_id']);
+
+        }
+
+        $_SESSION['p_id'] = null;
     }
 
     public function success() {

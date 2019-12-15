@@ -87,7 +87,7 @@ class Model {
     }
 
     public function get_post_by_title($title) {
-        $sql = "SELECT a.username, p.title, p.text, p.file FROM posts as p, users as a 
+        $sql = "SELECT a.username, p.title, p.text, p.file, p.id FROM posts as p, users as a 
                 WHERE title = \"$title\" AND a.id = p.author";
         $statement = $this->db->prepare($sql);
         $statement->execute();
@@ -113,6 +113,40 @@ class Model {
     public function add_user($username, $password, $email) {
         // no need to set role -> role is automatically set to 1 (author) by the db
         $sql = "INSERT INTO users(username, password, email) VALUES (\"$username\", \"$password\", \"$email\")";
+        $statement = $this->db->prepare($sql);
+        $statement->execute();
+    }
+
+    public function add_review($criterium_1, $criterium_2, $criterium_3, $overall, $post_id, $text) {
+        $sql = "INSERT INTO reviews(post, reviewer, criterium1, criterium2, criterium3, overall, text)
+                VALUES ($post_id, ".$_SESSION['id'].", $criterium_1, $criterium_2, $criterium_3, $overall, \"$text\")";
+        $statement = $this->db->prepare($sql);
+        $statement->execute();
+    }
+
+    public function set_as_reviewed($reviewer, $post_id) {
+        $sql = "UPDATE review_queue SET reviewed=1 WHERE post=$post_id AND reviewer=$reviewer";
+        $statement = $this->db->prepare($sql);
+        $statement->execute();
+    }
+
+    public function is_reviewed($reviewer, $post_id) {
+        $sql = "SELECT reviewed FROM review_queue WHERE post=$post_id AND reviewer=$reviewer";
+        $statement = $this->db->prepare($sql);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        if ($result['reviewed'] == 1) {
+//            $_SESSION['r_id'] =
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function update_review($criterium_1, $criterium_2, $criterium_3, $overall, $post_id, $text) {
+        $sql = "UPDATE reviews SET criterium1=$criterium_1, criterium2=$criterium_2, criterium3=$criterium_3,
+                overall=$overall, text=\"$text\" WHERE reviewer=".$_SESSION['id']." AND post=$post_id";
         $statement = $this->db->prepare($sql);
         $statement->execute();
     }
