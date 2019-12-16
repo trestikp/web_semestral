@@ -240,4 +240,19 @@ class Model {
 
         return $result;
     }
+
+    public function get_all_users() {
+        $sql = "SELECT * FROM users";
+        $statement = $this->db->prepare($sql);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+    public function alter_role($username, $role) {
+        $sql = "UPDATE users SET role=$role WHERE username=\"$username\"";
+        $statement = $this->db->prepare($sql);
+        $statement->execute();
+    }
 }

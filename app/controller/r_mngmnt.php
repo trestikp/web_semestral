@@ -68,7 +68,7 @@ class R_mngmnt extends Controller {
     public function show_review() {
         $review = $this->model->get_review_by_id($this->url_params[0]);
 
-        
+
 //        $this->params['obsah'] = $review['text'];
 //        $this->render();
     }
