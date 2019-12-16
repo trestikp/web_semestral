@@ -210,4 +210,34 @@ class Model {
 
         return $results;
     }
+
+    public function get_reviews_of_post($p_id) {
+        $sql = "SELECT r.*, u.username FROM reviews AS r, users AS u WHERE post=$p_id AND u.id=r.reviewer";
+        $statement = $this->db->prepare($sql);
+        $statement->execute();
+        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $results;
+    }
+
+    public function publish_post($p_id) {
+        $sql = "UPDATE posts SET published=1, state=3 WHERE id=$p_id";
+        $statement = $this->db->prepare($sql);
+        $statement->execute();
+    }
+
+    public function deny_post($p_id) {
+        $sql = "UPDATE posts SET published=2, state=3 WHERE id=$p_id";
+        $statement = $this->db->prepare($sql);
+        $statement->execute();
+    }
+
+    public function get_review_by_id($p_id) {
+        $sql = "SELECT * FROM reviews WHERE id=$p_id";
+        $statement = $this->db->prepare($sql);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
 }

@@ -16,8 +16,8 @@ function get_index($id) {
 }
 
 function get_id($id) {
-    $res = '';
-    $ptr = 2;
+    let $res = '';
+    let $ptr = 2;
 
     while($id.charAt($ptr) != '_') {
         $res += $id.charAt($ptr);
@@ -29,9 +29,9 @@ function get_id($id) {
 
 function get_selected($id) {
     $('#criterium_1 option:selected').val();
-    $index = get_index($id);
+    let $index = get_index($id);
     $id = get_id($id);
-    $selector = "r_" + $id + "_select" + $index;
+    let $selector = "r_" + $id + "_select" + $index;
 
     return $('#' + $selector).val();
 }
