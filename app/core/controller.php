@@ -1,40 +1,52 @@
 <?php
 
-//include_once '../app/controller/nav_subcontroller.php';
-//include_once '../app/controller/form_subcontroller.php';
-//include_once '../app/controller/login_controller.php';
-//include_once '../app/inc/db_info.php';
-
-//require_once "../app/controller/nav_subcontroller.php";
-//require_once "../app/controller/form_subcontroller.php";
-//require_once "../app/inc/db_info.php";
-
 require_once dirname(__FILE__)."/../controller/nav_subcontroller.php";
 require_once dirname(__FILE__)."/../controller/form_subcontroller.php";
 require_once dirname(__FILE__)."/../controller/login_controller.php";
 
-//require_once "/web_semestral/app/controller/nav_subcontroller.php";
-//require_once "/web_semestral/app/controller/form_subcontroller.php";
-//require_once "/web_semestral/app/inc/db_info.php";
-
+/**
+ * Class Controller the 'abstract' controller class. Provides the main functions and their parent functions.
+ */
 class Controller {
 
+    /**
+     * @var the instance of twing - the template loader
+     */
     protected $twig;
 
+    /**
+     * @var Nav the instance of nav (html)
+     */
     protected $nav;
 
+    /**
+     * @var LoginForm the instance of login form (html)
+     */
     protected $log_form;
 
-//    protected $log_error;
-
+    /**
+     * @var array of params passed through url - loaded through app
+     */
     public $url_params = [];
 
+    /**
+     * @var array params for the template
+     */
     protected $params;
 
+    /**
+     * @var instance of the db class
+     */
     protected $model;
 
+    /**
+     * @var db connection
+     */
     protected $db;
 
+    /**
+     * Controller constructor.Constructs the controller.
+     */
     public function __construct() {
         $this->params = array();
         $this->params['obsah'] = null;
@@ -47,6 +59,9 @@ class Controller {
         $this->loadTemplate();
     }
 
+    /**
+     * Creates the template loader
+     */
     protected function loadTemplate() {
         require_once '../app/vendor/autoload.php';
 
@@ -54,19 +69,17 @@ class Controller {
         $this->twig = new Twig\Environment($loader);
     }
 
+    /**
+     * Renders params to template
+     */
     protected function render() {
         echo $this->twig->render('main_template.html', array('obsah' => $this->params['obsah'], 'nav' => $this->params['nav'],
                                  'log_form' => $this->params['log_form'], 'log_error' => $this->params['log_error']));
     }
 
-    protected function render_log_error($error) {
-        $template = $this->twig->load('main_template.html');
-//        echo $template->renderBlock('log_error', ['log_error' => $error]);
-//        $template->render(['log_error' => $this->params['log_error']]);
-        $template->render(['log_error' => $error]);
-//        echo $this->twig->render('main_template.html', array('log_error' => $this->params['log_error']));
-    }
-
+    /**
+     * Creates model instance
+     */
     protected function createModel() {
         require_once "../app/inc/db_info.php";
         try {
@@ -80,19 +93,20 @@ class Controller {
         $this->model = new Model($this->db);
     }
 
+    /**
+     * Prepares some parts rendered in the template. Nav and log form.
+     */
     protected function prepare_parts() {
         // generate appropriate nav
         if (isset($_SESSION["logged"]) && $_SESSION["logged"] == true) {
-//            if ($_SESSION["logged"] == true) {
-                switch ($_SESSION["role"]) {
-                    // if author is logged in
-                    case 1: $this->nav->create_nav(1); break;
-                    // if reviewer is logged in
-                    case 2: $this->nav->create_nav(2); break;
-                    // admin logged in
-                    case 3: $this->nav->create_nav(3); break;
-                }
-//            }
+            switch ($_SESSION["role"]) {
+                // if author is logged in
+                case 1: $this->nav->create_nav(1); break;
+                // if reviewer is logged in
+                case 2: $this->nav->create_nav(2); break;
+                // admin logged in
+                case 3: $this->nav->create_nav(3); break;
+            }
         } else {
             $this->nav->create_nav(0);
         }
@@ -100,9 +114,7 @@ class Controller {
 
         // generate appropriate "form"
         if(isset($_SESSION["logged"]) && $_SESSION["logged"] == true) {
-//            if ($_SESSION["logged"] == true) {
-                $this->log_form->change_to_logged($_SESSION["username"]);
-//            }
+            $this->log_form->change_to_logged($_SESSION["username"]);
         } else {
             $this->log_form->__construct();
         }

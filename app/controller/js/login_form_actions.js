@@ -1,3 +1,12 @@
+/*
+    This file is part of login controller
+
+ */
+
+/**
+ * submitForm is called by login form buttons
+ * @param action - login or register
+ */
 function submitForm(action) {
     if(action == "login") {
         $.ajax("/web_semestral/public/login_controller/verify", {
@@ -20,18 +29,27 @@ function submitForm(action) {
     }
 }
 
+/**
+ * This function simply changes the text of login form error element
+ * @param msg - error message to be displayed
+ */
 function login_error(msg) {
     $('#log_error').text(msg);
 }
 
+/**
+ * Action of a button to cancel registration
+ */
 $(document).on('click', '#reg_cancel', function () {
-    // WTF goes back to random page ??
     window.history.back();
     // console.log(window .history.toString());
     // window.history.back();
     // window.history.back(-1);
 });
 
+/**
+ * Function is to help smoothly log out user
+ */
 function logOut() {
     let cur_url = window.location.href;
 
@@ -44,12 +62,7 @@ function logOut() {
     });
 }
 
+/**
+ * logout button action - calls above function logOut()
+ */
 $(document).on('click', '#logout', logOut);
-
-// document.addEventListener("click", function (e) {
-//     if (e.target && e.target.id == "logout") {
-//         logOut();
-//     }
-// })
-
-// element.onclick(logOut());

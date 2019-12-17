@@ -1,8 +1,15 @@
 <?php
 
+/**
+ * Class R_assignment handles reviewer assignment to posts
+ */
 class R_assignment extends Controller
 {
 
+    /**
+     * Default function called. Renders table of posts that are waiting to be reviewed. Only accessible for
+     * logged in users with role reviewer or admin.
+     */
     public function index()
     {
         if ($_SESSION["logged"] == false) {
@@ -20,12 +27,10 @@ class R_assignment extends Controller
         $this->render();
     }
 
-    // count select results
-//    $sql = "SELECT COUNT(*) FROM review_queue WHERE post=3";
-//SELECT p.title FROM posts AS p, review_queue AS rq WHERE (SELECT COUNT(*) FROM review_queue WHERE post=3)<=3 AND rq.id=p.id AND rq.published=0;
-// select titles where review count is <=3 and isn't published
-//SELECT p.title FROM posts AS p, review_queue AS rq WHERE (SELECT COUNT(*) FROM review_queue WHERE post=p.id)<=3 AND rq.id=p.id AND p.published=0;
-//in foreach call get_reviewers on every post
+    /**
+     * Constructs html table of posts that are not published and have less then 3 reviewers.
+     * @return string html posts table
+     */
     function construct_table()
     {
         $html = "";
@@ -75,6 +80,9 @@ class R_assignment extends Controller
         return $html;
     }
 
+    /**
+     * Adds a row to the review_queue table = assigning reviewer to a post
+     */
     function add_review_queue() {
         $p_id = $_POST['p_id'];
         $r_id = $_POST['r_id'];
@@ -91,6 +99,10 @@ class R_assignment extends Controller
         echo 0;
     }
 
+    /**
+     * Support function checks for number of reviewers assigned to a post, updates the cont if less then 3
+     * @param $p_id
+     */
     function review_count_check($p_id) {
         $rc = $this->model->get_assigned_review_count($p_id);
 

@@ -1,7 +1,13 @@
 <?php
 
+/**
+ * Class Post is a controller for post adding
+ */
 class Post extends Controller {
 
+    /**
+     * Default function called. Only for logged users in users.
+     */
     public function index() {
         // if a users isn't logged in redirect to home
         if ($_SESSION["logged"] == false) {
@@ -15,6 +21,9 @@ class Post extends Controller {
         $this->render();
     }
 
+    /**
+     * Submits post to database. Does some basic error checking like if all the fields required are filled.
+     */
     public function submit_post() {
         $first = $_POST['post_name'];
         $second = $_POST['post_desc'];
@@ -56,18 +65,17 @@ class Post extends Controller {
                 die(json_encode(array('message' => 'FILE_UPLOAD_ERROR', 'code' => 5)));
             }
         }
-
-
-//        $this->model->submit_post($first, $second, $filename);
     }
 
+    /**
+     * Renders html after successful post submit.
+     */
     public function submit_success() {
         if ($_SESSION["logged"] == false) {
             header('Location: /web_semestral/public/home/not_logged_in');
         }
 
         $this->prepare_parts();
-//        $str = '/web_semestral/public/post/index';
         $html = "<dl>
                     <dd>
                         <p>Váš příspěvek byl úspěšně odeslán.<br>

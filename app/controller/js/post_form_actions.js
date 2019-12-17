@@ -1,3 +1,11 @@
+/*
+    This file is a part of post posting controller
+ */
+
+/**
+ * Action of 'post_action' button. Gets data from the post form and gets a file if one is attached
+ * and sends it to server via ajax. Also handles error codes from the server.
+ */
 $(document).on('click', '#post_action', function() {
     // $.ajax("/web_semestral/public/post/submit_post", {
     //     type: "POST",
@@ -38,30 +46,51 @@ $(document).on('click', '#post_action', function() {
     });
 });
 
+/**
+ * Action of a button to redirect to "Mé příspěvky" after submitting a post
+ */
 $(document).on('click', '#my_posts_red', function() {
     window.location.replace("/web_semestral/public/my_posts/index");
 });
 
+/**
+ * Action of a button to redirect to add a new post
+ */
 $(document).on('click', '#new_post_red', function() {
     window.location.replace("/web_semestral/public/post/index");
 });
 
+/**
+ * Changes post error element to an error occurring by empty title
+ */
 function empty_title() {
     $('#post_error').text("Musíte zadat titul!");
 }
 
+/**
+ * Changes post error element to an error occurring by empty description
+ */
 function empty_description() {
     $('#post_error').text("Musíte zadat popisek!");
 }
 
+/**
+ * Changes post error element to an error occurring by incorrect file type
+ */
 function wrong_extension() {
     $('#post_error').text("Vybraný soubor není pdf!");
 }
 
+/**
+ * Changes post error element to an error occurring by too large file
+ */
 function oversize() {
     $('#post_error').text("Soubor je příliš velký!");
 }
 
+/**
+ * Changes post error element to an error occurring by the server error
+ */
 function upload_error() {
     $('#post_error').text("Upload se nezdařil (chyba serveru).");
 }

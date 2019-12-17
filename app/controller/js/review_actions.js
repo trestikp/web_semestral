@@ -1,3 +1,11 @@
+/*
+    This file is part of review submitting controller
+ */
+
+/**
+ * Handles action of a button to send review. Checks if all review criteriums are selected and on no error
+ * sends data to server
+ */
 $(document).on('click', '#send_review', function () {
     let error = false;
     let c1 = $('#criterium_1 option:selected').val();
@@ -23,6 +31,9 @@ $(document).on('click', '#send_review', function () {
     });
 });
 
+/**
+ * Handles after send button action to go back to reviews
+ */
 $(document).on('click', '#goto_reviews', function () {
     window.location.replace("/web_semestral/public/review/index");
 });

@@ -1,15 +1,25 @@
 <?php
 
+/**
+ * Class Nav constructs nav depending on what role a user is
+ */
 class Nav {
 
+    /**
+     * @var string nav html
+     */
     private $nav;
 
+    /**
+     * Nav constructor. Initializes nav attribute
+     */
     public function __construct() {
         $this->nav = '';
     }
 
-    /*
-     * @param $user should have following values:
+    /**
+     * Constructs the nav for a user with a role
+     * @param $user role of the user
      * 0 - no user logged in
      * 1 - author is logged in
      * 2 - reviewer is logged in
@@ -41,10 +51,19 @@ class Nav {
         }
     }
 
+    /**
+     * Returns nav
+     * @return string nav html
+     */
     public function get_nav() {
         return $this->nav;
     }
 
+    /**
+     * Adds html to @nav
+     * @param $href target of the nav
+     * @param $title name of the nav
+     */
     private function add_nav_element($href, $title) {
 //        if ($title == $_SESSION['active_l']) {
 //            $this->nav = $this->nav."<li class='page nav-item list-unstyled'>

@@ -1,3 +1,11 @@
+/*
+    This file is part of user managment controller
+ */
+
+/**
+ * Handles action of a button with class .role-changes. Finds closest table row from which extracts selected option in
+ * a user select and sends it to the server
+ */
 $(document).on('click', '.role-changer', function () {
     let select = $(this).closest('tr').find('.role-select').val();
     let username = $(this).closest('tr').find('.role-user').text();

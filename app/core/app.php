@@ -1,12 +1,27 @@
 <?php
 
+/**
+ * Class App heart of the whole application. Parses the url and calls (creates) appropriate controllers.
+ */
 class App {
+    /**
+     * @var is the controller object/ string - default = home
+     */
     protected $controller = 'home';
 
+    /**
+     * @var is the function string - default = index
+     */
     protected $method = 'index';
 
+    /**
+     * @var array of params
+     */
     protected $url_params = [];
 
+    /**
+     * App constructor.
+     */
     public function __construct() {
         $this->parseURL();
         $this->createPage();
@@ -14,12 +29,14 @@ class App {
         call_user_func_array([$this->controller, $this->method], $this->url_params);
     }
 
+    /**
+     * Parses the url to extract controller, method and params
+     */
     protected function parseURL() {
         if(isset($_GET['url'])) {
-//            echo $_GET['url']."\n";
-//            echo urldecode($_SERVER['REQUEST_URI']);
 
-//            $url = explode('/', filter_var(rtrim($_GET['url'], '/')));
+
+            //$url = explode('/', filter_var(rtrim($_GET['url'], '/')));
             // Need to use $_SERVER['REQUEST_URI'] because $_GET['url'] ignores dots ('.') (atleast at the end)
             $url = explode('/', filter_var(rtrim(urldecode($_SERVER['REQUEST_URI']), '/')));
 
@@ -31,7 +48,6 @@ class App {
             if(isset($url[3])) {
                 if(file_exists('../app/controller/'.$url[3].'.php')) {
                     $this->controller = $url[3];
-//                    echo $this->controller;
                     unset($url[3]);
 
                     // If controller is set and exists, checks for existence of method. If second part of url
@@ -42,7 +58,6 @@ class App {
 
                         // The rest of the array as params
                         $this->url_params = $url ? array_values($url) : [];
-//                        print_r($this->url_params);
                     } else {
                         /* If method isn't set assume index (default) method */
                         $this->method = 'index';
@@ -50,7 +65,8 @@ class App {
                     }
                 } else {
                     /* Set to error controller (something like page doesn't exit) */
-                    //TODO: controller error
+                    $this->controller = 'my_error';
+                    $this->method = 'index';
                 }
             } else {
                 /* If controller isn't set assume home (default) controller */
@@ -60,6 +76,9 @@ class App {
         }
     }
 
+    /**
+     * Creates the controller instance
+     */
     protected function createPage() {
         /* Already checked for file existence in url parsing */
         require_once '../app/controller/'.$this->controller.'.php';

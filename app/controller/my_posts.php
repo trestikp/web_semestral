@@ -1,7 +1,13 @@
 <?php
 
+/**
+ * Class My_posts is a controller to show posts of a logged in user (no matter the sate)
+ */
 class My_posts extends Controller {
 
+    /**
+     * Default function called. No accessible for logged out users.
+     */
     public function index() {
         if ($_SESSION["logged"] == false) {
             header('Location: /web_semestral/public/home/not_logged_in');
@@ -23,7 +29,15 @@ class My_posts extends Controller {
         }
 
         $this->prepare_parts();
+        //gets specific post by title
         $posts = $this->model->get_post_by_title($this->url_params[0]);
+
+        if (count($posts) <= 0) {
+            $html = file_get_contents('../app/view/static/post_error.html');
+            $this->params['obsah'] = $html;
+            $this->render();
+            return;
+        }
 
         //presuming only one post with the same title name and author
         $author = $posts[0]["username"];
@@ -51,8 +65,13 @@ class My_posts extends Controller {
         $this->render();
     }
 
+    /**
+     * Constructs a string that makes a html of a table with all users posts
+     * @return string html of a user post table
+     */
     function construct_posts() {
         $html = "";
+        // gets all users posts from db
         $posts = $this->model->get_users_posts();
 
         if (empty($posts)) {
@@ -67,7 +86,6 @@ class My_posts extends Controller {
          * state 3 = accepted/denied
          */
         foreach ($posts as $item){
-//            <td><a href='read_my_post/".$item['title']."'>".$item['title']."</a></td>
             $html .= "<tr>
                         <td><a href='read_my_post/".$item['title']."'>".$item['title']."</a></td>";
 

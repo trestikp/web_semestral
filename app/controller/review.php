@@ -1,7 +1,13 @@
 <?php
 
+/**
+ * Class Review is a controller to review form
+ */
 class Review extends Controller {
 
+    /**
+     * Default function called. Renders table of posts to be reviewed by logged in reviewer/ admin.
+     */
     public function index() {
         if ($_SESSION["logged"] == false) {
             header('Location: /web_semestral/public/home/not_logged_in');
@@ -13,11 +19,14 @@ class Review extends Controller {
 
         $this->prepare_parts();
         $html = $this->construct_table();
-//        $this->params['obsah'] = file_get_contents('../app/view/static/review.html');
         $this->params['obsah'] = $html;
         $this->render();
     }
 
+    /**
+     * Constructs table of posts assigned for review to the logged reviewer/ admin.
+     * @return string html table of posts
+     */
     function construct_table() {
         $html = "";
         $posts = $this->model->get_posts_to_review();
@@ -42,6 +51,9 @@ class Review extends Controller {
         return $html;
     }
 
+    /**
+     * Renders the html to review a specific post got by title
+     */
     public function review_post() {
         if ($_SESSION["logged"] == false) {
             header('Location: /web_semestral/public/home/not_logged_in');
@@ -78,12 +90,11 @@ class Review extends Controller {
         $this->render();
 
         // TODO: ??? if time - add fill form for update
-
-//        if ($this->model->is_reviewed($_SESSION['id'], $_SESSION['p_id'])) {
-//            echo "sc";
-//        }
     }
 
+    /**
+     * Submits the review to db
+     */
     function submit_review() {
         $c1 = $_POST['criterium_1'];
         $c2 = $_POST['criterium_2'];
@@ -101,6 +112,9 @@ class Review extends Controller {
         $_SESSION['p_id'] = null;
     }
 
+    /**
+     * Shows success html if the submit is successful
+     */
     public function success() {
         if ($_SESSION["logged"] == false) {
             header('Location: /web_semestral/public/home/for_logged.html');

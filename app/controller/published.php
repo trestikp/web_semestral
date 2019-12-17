@@ -1,7 +1,13 @@
 <?php
 
+/**
+ * Class Published controller that shows published posts
+ */
 class Published extends Controller {
 
+    /**
+     * Default function called. Shows all published posts.
+     */
     public function index() {
         $this->prepare_parts();
         $html = $this->construct_posts();
@@ -9,15 +15,20 @@ class Published extends Controller {
         $this->render();
     }
 
+    /**
+     * Action of a specific post being clicked and to show it. Gets the posts name through url.
+     */
     public function read_post() {
         $this->prepare_parts();
 
-        if (empty($this->url_params)) {
-            //TODO: some error
-        }
-
         $posts = $this->model->get_post_by_title($this->url_params[0]);
 
+        if (count($posts) <= 0) {
+            $html = file_get_contents('../app/view/static/post_error.html');
+            $this->params['obsah'] = $html;
+            $this->render();
+            return;
+        }
 
         //presuming only one post with the same title name and author
         $author = $posts[0]["username"];
@@ -45,6 +56,10 @@ class Published extends Controller {
         $this->render();
     }
 
+    /**
+     * Constructs html table of published posts
+     * @return string html of posts table
+     */
     private function construct_posts() {
         $html = "\n<h3>Seznam příspěvků</h3><br>\n";
         $posts = $this->model->get_all_published_posts();

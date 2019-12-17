@@ -1,9 +1,18 @@
 <?php
 
+/**
+ * Class R_mngmnt handles accepting/ denying reviewes
+ */
 class R_mngmnt extends Controller {
 
+    /**
+     * @var array of ReviewManagment objects holding info about a post and its reviews
+     */
     private $objs = array();
 
+    /**
+     * Default function called. Shows table of reviews ready to be accepted/ deny. Only allows logged in admins.
+     */
     public function index() {
         if ($_SESSION["logged"] == false) {
             header('Location: /web_semestral/public/home/not_logged_in');
@@ -19,6 +28,10 @@ class R_mngmnt extends Controller {
         $this->render();
     }
 
+    /**
+     * Constructs shown table.
+     * @return string table html of posts with review ratings overview and buttons to accept/ deny.
+     */
     function construct_table() {
         $html = "";
         $posts = $this->model->get_unpublished_reviewed();
@@ -52,6 +65,11 @@ class R_mngmnt extends Controller {
         return $html;
     }
 
+    /**
+     * Constructs subtable that shows review overview.
+     * @param $reviews reviews to be shown
+     * @return string html table of review overview
+     */
     function construct_sub_table($reviews) {
         $html = "\n<table>
                     <tr>".
@@ -78,6 +96,9 @@ class R_mngmnt extends Controller {
         return $html;
     }
 
+    /**
+     * Action to show full review from the subtable
+     */
     public function show_review() {
         $review = $this->model->get_review_by_id($this->url_params[0]);
 
@@ -86,6 +107,11 @@ class R_mngmnt extends Controller {
 //        $this->render();
     }
 
+    /**
+     * Counts review overall average to make it easier.
+     * @param $reviews array
+     * @return string returns html table with the average
+     */
     function get_avarage_overall($reviews) {
         $sum = 0;
         $cnt = 0;
@@ -104,6 +130,9 @@ class R_mngmnt extends Controller {
         return $html;
     }
 
+    /**
+     * Publishes post
+     */
     function accept() {
         $p_id = $_POST['p_id'];
         $p_title = $_POST['p_title'];
@@ -111,6 +140,9 @@ class R_mngmnt extends Controller {
         $this->model->publish_post($p_id);
     }
 
+    /**
+     * Denies post publishing
+     */
     function deny() {
         $p_id = $_POST['p_id'];
         $p_title = $_POST['p_title'];
@@ -118,6 +150,12 @@ class R_mngmnt extends Controller {
         $this->model->deny_post($p_id);
     }
 
+    /**
+     * Finds post by id, title is more or less a confirmation
+     * @param $p_id post id
+     * @param $p_title post title
+     * @return mixed posts information
+     */
     function find_post($p_id, $p_title) {
         foreach ($this->objs as $item) {
             if ($item->get_id() == $p_id && $item->get_title() == $p_title) {
@@ -127,14 +165,41 @@ class R_mngmnt extends Controller {
     }
 }
 
+/**
+ * Class ReviewManagment information container
+ */
 class ReviewManagment {
+    /**
+     * @var post id
+     */
     private $p_id;
+
+    /**
+     * @var post title
+     */
     private $p_title;
+
+    /**
+     * @var array of reviews
+     */
     private $reviews = array();
+
+    /**
+     * @var accept button html
+     */
     private $accept_btn;
+
+    /**
+     * @var denies button html
+     */
     private $deny_btn;
 
-
+    /**
+     * ReviewManagment constructor. Constructs the class and constructs buttons.
+     * @param $p_id
+     * @param $p_title
+     * @param $reviews
+     */
     function __construct($p_id, $p_title, $reviews) {
         $this->p_id = $p_id;
         $this->p_title = $p_title;
@@ -142,46 +207,54 @@ class ReviewManagment {
         $this->construct_accept();
         $this->construct_deny();
     }
-//    function set_p_id($p_id) {
-//        $this->p_id = $p_id;
-//        $this->construct_accept();
-//        $this->construct_deny();
-//    }
-//
-//    function set_p_title($p_title) {
-//        $this->p_title = $p_title;
-//    }
-//
-//    function set_review($reviews) {
-//        $this->reviews = $reviews;
-//    }
 
+    /**
+     * constructs the html of the accept button
+     */
     function construct_accept() {
         $this->accept_btn = "<input type='button' id='r_accept_".$this->p_id."_".$this->p_title."' value='Přijmout'
                              class='r_manage_btn'>";
     }
 
+    /**
+     * constructs the html of the deny button
+     */
     function construct_deny() {
         $this->deny_btn = "<input type='button' id='r_deny_".$this->p_id."_".$this->p_title."' value='Zamítnout'
                            class='r_manage_btn'>";
     }
 
+    /**
+     * @return array of reviews
+     */
     function get_reviews() {
         return $this->reviews;
     }
 
+    /**
+     * @return accept button html
+     */
     function get_accept() {
         return $this->accept_btn;
     }
 
+    /**
+     * @return deny button html
+     */
     function get_deny() {
         return $this->deny_btn;
     }
 
+    /**
+     * @return post title
+     */
     function get_title() {
         return $this->p_title;
     }
 
+    /**
+     * @return post id
+     */
     function get_id() {
         return $this->p_id;
     }

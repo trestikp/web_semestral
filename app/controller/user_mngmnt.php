@@ -1,7 +1,13 @@
 <?php
 
+/**
+ * Class user_mngmnt class handles user managment. Admin can alter user role.
+ */
 class user_mngmnt extends Controller {
 
+    /**
+     * Default function called. Renders a table of users with a drop list and button for each of them to set a new role.
+     */
     public function index() {
         if ($_SESSION["logged"] == false) {
             header('Location: /web_semestral/public/home/not_logged_in');
@@ -17,6 +23,10 @@ class user_mngmnt extends Controller {
         $this->render();
     }
 
+    /**
+     * Constructs table of users.
+     * @return string html table with users, drop lists and buttons
+     */
     function construct_table() {
         $html = "";
         $users = $this->model->get_all_users();
@@ -33,6 +43,11 @@ class user_mngmnt extends Controller {
         return $html;
     }
 
+    /**
+     * Constructs the droplists for the users
+     * @param $role Role the user already has
+     * @return string html of the drop list
+     */
     function construct_select($role) {
         $html = "<select class='role-select'>\n";
         for($i = 1; $i <= 3; $i++) {
@@ -57,6 +72,9 @@ class user_mngmnt extends Controller {
         return $html;
     }
 
+    /**
+     * Change users role in db
+     */
     public function change_role() {
         $username = $_POST['username'];
         $role = $_POST['role'];
