@@ -76,8 +76,11 @@ class Model {
     public function get_posts_to_review() {
 //        $id = $_SESSION['id'];
 //        $sql = "SELECT p.title FROM posts as p, review_queue as rq WHERE p.id=rq.post AND rq.publish=0 AND rq.reviewer=".$id;
-        $sql = "SELECT p.title, rq.reviewed FROM posts as p, review_queue as rq WHERE
-                p.id=rq.post AND rq.published=0 AND rq.reviewer=".$_SESSION['id']." ORDER BY rq.reviewed";
+        $sql = "SELECT p.title, rq.reviewed FROM posts as p JOIN review_queue as rq ON p.id=rq.post WHERE
+                p.id=rq.post AND 
+                p.published=0 AND
+                rq.reviewer=".$_SESSION['id']." 
+                ORDER BY rq.reviewed";
         $statement = $this->db->prepare($sql);
 //        $statement->bindParam(':id', $_SESSION['id']);
         $statement->execute();
@@ -155,9 +158,15 @@ class Model {
 //        SELECT p.title, p.id, COUNT(*) FROM posts AS p JOIN review_queue AS rq ON rq.post=p.id
 //	    GROUP BY p.id
 //        HAVING COUNT(*)<3
-        $sql = "SELECT p.title, p.id, COUNT(*) FROM posts AS p JOIN review_queue AS rq ON rq.post=p.id
-	            GROUP BY p.id
-                HAVING COUNT(*)<3";
+
+//        SELECT title, id FROM posts WHERE
+//	state=0 AND
+//    (SELECT COUNT(*) FROM posts AS p JOIN review_queue AS rq ON p.id=rq.post)<3
+
+//        $sql = "SELECT p.title, p.id, COUNT(*) FROM posts AS p JOIN review_queue AS rq ON rq.post=p.id
+//	            GROUP BY p.id
+//                HAVING COUNT(*)<3";
+        $sql = "SELECT title, id FROM posts WHERE state=0";
         $statement = $this->db->prepare($sql);
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -252,6 +261,21 @@ class Model {
 
     public function alter_role($username, $role) {
         $sql = "UPDATE users SET role=$role WHERE username=\"$username\"";
+        $statement = $this->db->prepare($sql);
+        $statement->execute();
+    }
+
+    public function get_assigned_review_count($p_id) {
+        $sql = "SELECT COUNT(*) FROM review_queue WHERE post=$p_id";
+        $statement = $this->db->prepare($sql);
+        $statement->execute();
+        $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+    public function update_post_state($p_id, $state) {
+        $sql = "UPDATE posts SET state=$state WHERE id=$p_id";
         $statement = $this->db->prepare($sql);
         $statement->execute();
     }

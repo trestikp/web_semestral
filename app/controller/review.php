@@ -4,7 +4,11 @@ class Review extends Controller {
 
     public function index() {
         if ($_SESSION["logged"] == false) {
-            header('Location: /web_semestral/public/home/index');
+            header('Location: /web_semestral/public/home/not_logged_in');
+        }
+
+        if ($_SESSION['role'] < 2) {
+            header('Location: /web_semestral/public/home/insufficient_permissions');
         }
 
         $this->prepare_parts();
@@ -14,7 +18,7 @@ class Review extends Controller {
         $this->render();
     }
 
-    private function construct_table() {
+    function construct_table() {
         $html = "";
         $posts = $this->model->get_posts_to_review();
 
@@ -34,6 +38,14 @@ class Review extends Controller {
     }
 
     public function review_post() {
+        if ($_SESSION["logged"] == false) {
+            header('Location: /web_semestral/public/home/not_logged_in');
+        }
+
+        if ($_SESSION['role'] < 2) {
+            header('Location: /web_semestral/public/home/insufficient_permissions');
+        }
+
         $this->prepare_parts();
 
         $posts = $this->model->get_post_by_title($this->url_params[0]);
@@ -67,7 +79,7 @@ class Review extends Controller {
 //        }
     }
 
-    public function submit_review() {
+    function submit_review() {
         $c1 = $_POST['criterium_1'];
         $c2 = $_POST['criterium_2'];
         $c3 = $_POST['criterium_3'];
@@ -79,7 +91,6 @@ class Review extends Controller {
         } else {
             $this->model->add_review($c1, $c2, $c3, $ol, $_SESSION['p_id'], $text);
             $this->model->set_as_reviewed($_SESSION['id'], $_SESSION['p_id']);
-
         }
 
         $_SESSION['p_id'] = null;
@@ -87,7 +98,11 @@ class Review extends Controller {
 
     public function success() {
         if ($_SESSION["logged"] == false) {
-            header('Location: /web_semestral/public/home/index');
+            header('Location: /web_semestral/public/home/for_logged.html');
+        }
+
+        if ($_SESSION['role'] < 2) {
+            header('Location: /web_semestral/public/home/insufficient_role.html');
         }
 
         $this->prepare_parts();

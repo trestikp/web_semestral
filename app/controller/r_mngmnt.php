@@ -5,6 +5,14 @@ class R_mngmnt extends Controller {
     private $objs = array();
 
     public function index() {
+        if ($_SESSION["logged"] == false) {
+            header('Location: /web_semestral/public/home/not_logged_in');
+        }
+
+        if ($_SESSION['role'] < 3) {
+            header('Location: /web_semestral/public/home/insufficient_permissions');
+        }
+
         $this->prepare_parts();
         $html = $this->construct_table();
         $this->params['obsah'] = $html;
@@ -91,14 +99,14 @@ class R_mngmnt extends Controller {
         return $html;
     }
 
-    public function accept() {
+    function accept() {
         $p_id = $_POST['p_id'];
         $p_title = $_POST['p_title'];
 
         $this->model->publish_post($p_id);
     }
 
-    public function deny() {
+    function deny() {
         $p_id = $_POST['p_id'];
         $p_title = $_POST['p_title'];
 

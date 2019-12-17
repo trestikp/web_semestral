@@ -12,9 +12,9 @@ $(document).on('click', '.r_manage_btn', function () {
             window.location.reload(false);
             // console.log(re);
         });
-    } else if ($id.substring(2, 8) == "accept") {
-        let p_id = get_id($id.substring(9));
-        let p_title = get_title($id.substring(9));
+    } else if (id.substring(2, 8) == "accept") {
+        let p_id = get_id(id.substring(9));
+        let p_title = get_title(id.substring(9));
 
         $.ajax("/web_semestral/public/r_mngmnt/accept", {
             data: {p_id: p_id, p_title: p_title},

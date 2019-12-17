@@ -3,6 +3,10 @@
 class My_posts extends Controller {
 
     public function index() {
+        if ($_SESSION["logged"] == false) {
+            header('Location: /web_semestral/public/home/not_logged_in');
+        }
+
         $this->prepare_parts();
         $html = $this->construct_posts();
         $this->params['obsah'] = $html;
@@ -14,6 +18,10 @@ class My_posts extends Controller {
      * The thought is changing this to allow post editing.
      */
     public function read_my_post() {
+        if ($_SESSION["logged"] == false) {
+            header('Location: /web_semestral/public/home/not_logged_in');
+        }
+
         $this->prepare_parts();
         $posts = $this->model->get_post_by_title($this->url_params[0]);
 

@@ -3,6 +3,14 @@
 class user_mngmnt extends Controller {
 
     public function index() {
+        if ($_SESSION["logged"] == false) {
+            header('Location: /web_semestral/public/home/not_logged_in');
+        }
+
+        if ($_SESSION['role'] < 3) {
+            header('Location: /web_semestral/public/home/insufficient_permissions');
+        }
+
         $this->prepare_parts();
         $html = $this->construct_table();
         $this->params['obsah'] = $html;

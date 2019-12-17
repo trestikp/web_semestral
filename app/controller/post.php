@@ -5,7 +5,7 @@ class Post extends Controller {
     public function index() {
         // if a users isn't logged in redirect to home
         if ($_SESSION["logged"] == false) {
-            header('Location: /web_semestral/public/home/index');
+            header('Location: /web_semestral/public/home/not_logged_in');
         }
 
         $this->prepare_parts();
@@ -51,7 +51,7 @@ class Post extends Controller {
             if (move_uploaded_file($file, $destination)) {
                 $this->model->submit_post($first, $second, $filename);
                 //successful die
-                die(json_encode(array('message' => 'TEXT_ERROR', 'code' => 0)));
+                die(json_encode(array('message' => 'SUCCESS!', 'code' => 0)));
             } else {
                 die(json_encode(array('message' => 'FILE_UPLOAD_ERROR', 'code' => 5)));
             }
@@ -63,7 +63,7 @@ class Post extends Controller {
 
     public function submit_success() {
         if ($_SESSION["logged"] == false) {
-            header('Location: /web_semestral/public/home/index');
+            header('Location: /web_semestral/public/home/not_logged_in');
         }
 
         $this->prepare_parts();
