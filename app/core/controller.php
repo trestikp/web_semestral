@@ -108,4 +108,8 @@ class Controller {
         }
         $this->params['log_form'] = $this->log_form->get_log_form();
     }
+
+//    function active_nav_link() {
+//        $_SESSION['active_l'] = $_POST['active_l'];
+//    }
 }

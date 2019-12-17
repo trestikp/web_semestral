@@ -16,17 +16,6 @@ class Nav {
      * 3 - admin is logged in
      */
     public function create_nav($user) {
-        $is_valid = true;
-        if($user < 0 || $user > 3) {
-            // TODO: redirect this to some error output
-            echo 'user doesn\'t belong to any known group';
-            $is_valid = false;
-        }
-
-//        echo "creating nav for user $user\n";
-
-
-        // TODO: if the number is invalid - DO NOT change the nav - not logged user could get admin nav!!
         // basically useless if, 0 is (should be) always done
         if(0 <= $user) {
             $this->add_nav_element('/web_semestral/public/home/index', 'Úvod');
@@ -57,7 +46,14 @@ class Nav {
     }
 
     private function add_nav_element($href, $title) {
-        $is_active = '';
-        $this->nav = $this->nav."<li class='page nav-item list-unstyled'><a id='link' class='nav-link $is_active' href=$href>$title</a></li>\n";
+//        if ($title == $_SESSION['active_l']) {
+//            $this->nav = $this->nav."<li class='page nav-item list-unstyled'>
+//                                 <a id='link' class='nav-link navigation-link active' href=$href>$title</a></li>\n";
+//        } else {
+//            $this->nav = $this->nav."<li class='page nav-item list-unstyled'>
+//                                 <a id='link' class='nav-link navigation-link' href=$href>$title</a></li>\n";
+//        }
+        $this->nav = $this->nav."<li class='page nav-item list-unstyled'>
+                                 <a id='link' class='nav-link navigation-link' href=$href>$title</a></li>\n";
     }
 }

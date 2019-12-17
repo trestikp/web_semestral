@@ -185,10 +185,21 @@ class Model {
     }
 
     //SELECT DISTINCT u.username FROM users AS u, review_queue AS rq WHERE u.id NOT IN (SELECT DISTINCT u.id FROM users AS u, posts AS p, review_queue AS rq WHERE rq.post=3 AND u.id=rq.reviewer) AND u.role>1
+
+    //SELECT DISTINCT username, id FROM users WHERE
+    //                role>1
+
+    //SELECT DISTINCT u.id FROM users AS u JOIN review_queue AS rq ON u.id=rq.reviewer WHERE
+    //                rq.post=3
     public function get_free_reviewers($p_id) {
-        $sql = "SELECT DISTINCT u.username, u.id FROM users AS u, review_queue AS rq WHERE
-                u.id NOT IN (SELECT DISTINCT u.id FROM users AS u, posts AS p, review_queue AS rq WHERE
-                rq.post=$p_id AND u.id=rq.reviewer) AND u.role>1";
+//        $sql = "SELECT DISTINCT u.username, u.id FROM users AS u, review_queue AS rq WHERE
+//                u.id NOT IN (SELECT DISTINCT u.id FROM users AS u, posts AS p, review_queue AS rq WHERE
+//                rq.post=$p_id AND u.id=rq.reviewer) AND u.role>1";
+        $sql = "SELECT DISTINCT username, id FROM users WHERE
+                role>1 AND 
+                id NOT IN 
+                (SELECT DISTINCT u.id FROM users AS u JOIN review_queue AS rq ON u.id=rq.reviewer WHERE
+                          rq.post=$p_id)";
         $statement = $this->db->prepare($sql);
         $statement->execute();
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);

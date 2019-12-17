@@ -72,9 +72,9 @@ class My_posts extends Controller {
                         <td><a href='read_my_post/".$item['title']."'>".$item['title']."</a></td>";
 
             switch ($item['state']) {
-                case 0: $html .= "<td>Waiting for reviewers to be assigned</td>"; break;
-                case 1: $html .= "<td>Waiting for reviewers to review</td>"; break;
-                case 2: $html .= "<td>Waiting for admin's decision</td>"; break;
+                case 0: $html .= "<td>Čekám na přiřazení recenzentů</td>"; break;
+                case 1: $html .= "<td>Čekám na recenze</td>"; break;
+                case 2: $html .= "<td>Čekám na adminovo rozhodnutí</td>"; break;
                 case 3: if ($item['published'] == 1) {
                             $html .= "<td>Published</td>";
                             break;

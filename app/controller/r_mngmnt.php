@@ -24,6 +24,11 @@ class R_mngmnt extends Controller {
         $posts = $this->model->get_unpublished_reviewed();
 //        $objs = array();
 
+        if (empty($posts)) {
+            $html .= "Žádné příspěvky připravené k publikaci.";
+            return $html;
+        }
+
         $html .= "\n<table class='table table-striped'>\n<tbody>\n";
 
         for ($i = 0; $i < count($posts); $i++) {

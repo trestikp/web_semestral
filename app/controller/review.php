@@ -22,6 +22,11 @@ class Review extends Controller {
         $html = "";
         $posts = $this->model->get_posts_to_review();
 
+        if (empty($posts)) {
+            $html .= "Nemáte žádné příspěvky čekající na ohodnocení.";
+            return $html;
+        }
+
         $html .= "\n<table class='table table-striped'>\n<tbody>\n";
         foreach ($posts as $item){
             $html .= "<tr>

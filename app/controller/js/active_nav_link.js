@@ -30,3 +30,14 @@
 //    // current[0].className = current[0].className.replace("active", "");
 //    // link.classList.add('active');
 // });
+
+$(document).on('click', '.navigation-link', function () {
+    $('ul li a.active').removeClass('active');
+    $(this).addClass('active');
+
+    // $.ajax('/web_semestral/public/controller/active_nav_link', {
+    //     data: {active_l: $(this).text()},
+    //     type: "POST"
+    // });
+    // $(this).load('controller/active_nav_link/active_l?' + $(this).text());
+});

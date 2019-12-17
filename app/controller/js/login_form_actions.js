@@ -4,19 +4,24 @@ function submitForm(action) {
             type: "POST",
             data: $("#login_form").serialize()
         }).done(function (re) {
-            // alert(re);
+            // console.log(re);
+            switch (re) {
+                case '1': login_error("Uživatel neexistuje!"); return;
+                case '3': login_error("Špatné heslo!"); return;
+            }
+
             let cur_url = window.location.href;
             window.location.replace("/web_semestral/public/login_controller/log_in_user");
             window.location.replace(cur_url);
-            // console.log(re);
-        }).fail(function () {
-            //TODO: don't forget to remove this please
-            alert("FUCK");
         });
 
     } else if (action == "register") {
         window.location.replace("/web_semestral/public/registration/index");
     }
+}
+
+function login_error(msg) {
+    $('#log_error').text(msg);
 }
 
 $(document).on('click', '#reg_cancel', function () {

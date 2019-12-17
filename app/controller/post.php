@@ -45,7 +45,7 @@ class Post extends Controller {
 //            header('HTTP/1.1 500 Internal Server Error');
 //            header('Content-Type: application/json; charset=UTF-8');
             die(json_encode(array('message' => 'FILE_TYPE_ERROR', 'code' => 3)));
-        } elseif ($size > 1000000) {
+        } elseif ($size > 5000000) {
             die(json_encode(array('message' => 'FILE_SIZE_ERROR', 'code' => 4)));
         } else {
             if (move_uploaded_file($file, $destination)) {

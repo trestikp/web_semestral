@@ -15,6 +15,13 @@ $(document).on('click', '#register', function () {
         interrupt = true;
     }
 
+    if (!document.getElementById('reg_email').value.includes('@')) {
+        document.getElementById('reg_email').style.borderColor = "red";
+        $('#reg_email_error').text("Email musí obsahovat @");
+        document.getElementById('reg_email_error').style.color = 'red';
+        interrupt = true;
+    }
+
     if (document.getElementById('reg_passwd').value == "") {
         document.getElementById('reg_passwd').style.borderColor = "red";
         $('#reg_passwd_error').text("Toto pole musí být vyplněné!");

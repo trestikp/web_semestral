@@ -31,6 +31,11 @@ class R_assignment extends Controller
         $html = "";
         $posts = $this->model->get_review_assignment_posts();
 
+        if (empty($posts)) {
+            $html .= "Žádné příspěvky čekající na recenzenty.";
+            return $html;
+        }
+
         $html .= "\n<table class='table table-striped'>\n<tbody>\n";
         foreach ($posts as $item) {
             $html .= "<tr>\n
