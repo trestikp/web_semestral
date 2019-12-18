@@ -94,10 +94,10 @@ class My_posts extends Controller {
                 case 1: $html .= "<td>Čekám na recenze</td>"; break;
                 case 2: $html .= "<td>Čekám na adminovo rozhodnutí</td>"; break;
                 case 3: if ($item['published'] == 1) {
-                            $html .= "<td>Published</td>";
+                            $html .= "<td>Publikován</td>";
                             break;
                         } else {
-                            $html .= "<td>Denied</td>";
+                            $html .= "<td>Zamítnut</td>";
                             break;
                         }
             }

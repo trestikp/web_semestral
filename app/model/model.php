@@ -25,9 +25,10 @@ class Model {
      * @return int exit code 0 = success, != 0 - failure
      */
     public function login($username, $password) {
-        $sql = "SELECT * FROM users WHERE username=\"$username\"";
+//        $sql = "SELECT * FROM users WHERE username=\"$username\"";
+        $sql = "SELECT * FROM users WHERE username=:username";
         $statement = $this->db->prepare($sql);
-        $statement->execute();
+        $statement->execute(array('username' => $username));
         $result = $statement->fetchAll();
 
         if (count($result) < 1) {
@@ -60,8 +61,12 @@ class Model {
      * @param $file location of the file
      */
     public function submit_post($title, $description, $file) {
-        $sql = "INSERT INTO posts(author, title, text, file) VALUES (".$_SESSION['id'].",'$title', '$description', '$file')";
-        $this->db->exec($sql);
+//        $sql = "INSERT INTO posts(author, title, text, file) VALUES (".$_SESSION['id'].",'$title', '$description', '$file')";
+        $sql = "INSERT INTO posts(author, title, text, file) VALUES (:id, :title, :description, :file)";
+        $statement = $this->db->prepare($sql);
+        $statement->execute(array('id' => $_SESSION['id'], 'title' => $title, 'description' => $description,
+                                    'file' => $file));
+//        $this->db->exec($sql);
     }
 
     /**
@@ -82,9 +87,11 @@ class Model {
      * @return mixed posts
      */
     public function get_users_posts() {
-        $sql = "SELECT title, state, published, file FROM posts WHERE author = ".$_SESSION['id'];
+//        $sql = "SELECT title, state, published, file FROM posts WHERE author = ".$_SESSION['id'];
+        $sql = "SELECT title, state, published, file FROM posts WHERE author = :id";
         $statement = $this->db->prepare($sql);
-        $statement->execute();
+        $statement->execute(array('id' => $_SESSION['id']));
+//        $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         return $result;
@@ -98,10 +105,16 @@ class Model {
         $sql = "SELECT p.title, rq.reviewed FROM posts as p JOIN review_queue as rq ON p.id=rq.post WHERE
                 p.id=rq.post AND 
                 p.published=0 AND
-                rq.reviewer=".$_SESSION['id']." 
+                rq.reviewer=:id 
                 ORDER BY rq.reviewed";
+//        $sql = "SELECT p.title, rq.reviewed FROM posts as p JOIN review_queue as rq ON p.id=rq.post WHERE
+//                p.id=rq.post AND
+//                p.published=0 AND
+//                rq.reviewer= ".$_SESSION['id']."
+//                ORDER BY rq.reviewed";
         $statement = $this->db->prepare($sql);
-        $statement->execute();
+//        $statement->execute();
+        $statement->execute(array('id' => $_SESSION['id']));
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         return $result;
@@ -113,10 +126,13 @@ class Model {
      * @return mixed post (s)
      */
     public function get_post_by_title($title) {
+//        $sql = "SELECT a.username, p.title, p.text, p.file, p.id FROM posts as p, users as a
+//                WHERE title = \"$title\" AND a.id = p.author";
         $sql = "SELECT a.username, p.title, p.text, p.file, p.id FROM posts as p, users as a 
-                WHERE title = \"$title\" AND a.id = p.author";
+                WHERE title =:title AND a.id = p.author";
         $statement = $this->db->prepare($sql);
-        $statement->execute();
+        $statement->execute(array('title' => $title));
+//        $statement->execute();
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         return $result;
@@ -128,9 +144,11 @@ class Model {
      * @return bool
      */
     public function username_occupied($username) {
-        $sql = "SELECT * FROM users WHERE username=\"$username\"";
+//        $sql = "SELECT * FROM users WHERE username=\"$username\"";
+        $sql = "SELECT * FROM users WHERE username=:username";
         $statement = $this->db->prepare($sql);
-        $statement->execute();
+//        $statement->execute();
+        $statement->execute(array('username' => $username));
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         if (count($result) >= 1) {
@@ -149,9 +167,11 @@ class Model {
      */
     public function add_user($username, $password, $email) {
         // no need to set role -> role is automatically set to 1 (author) by the db
-        $sql = "INSERT INTO users(username, password, email) VALUES (\"$username\", \"$password\", \"$email\")";
+//        $sql = "INSERT INTO users(username, password, email) VALUES (\"$username\", \"$password\", \"$email\")";
+        $sql = "INSERT INTO users(username, password, email) VALUES (:username, :password, :email)";
         $statement = $this->db->prepare($sql);
-        $statement->execute();
+        $statement->execute(array('username' => $username, 'password' => $password, 'email' => $email));
+//        $statement->execute();
     }
 
     /**
@@ -164,10 +184,14 @@ class Model {
      * @param $text
      */
     public function add_review($criterium_1, $criterium_2, $criterium_3, $overall, $post_id, $text) {
+//        $sql = "INSERT INTO reviews(post, reviewer, criterium1, criterium2, criterium3, overall, text)
+//                VALUES ($post_id, ".$_SESSION['id'].", $criterium_1, $criterium_2, $criterium_3, $overall, \"$text\")";
         $sql = "INSERT INTO reviews(post, reviewer, criterium1, criterium2, criterium3, overall, text)
-                VALUES ($post_id, ".$_SESSION['id'].", $criterium_1, $criterium_2, $criterium_3, $overall, \"$text\")";
+                VALUES (:p_id, :id, :c1, :c2, :c3, :ol, :text)";
         $statement = $this->db->prepare($sql);
-        $statement->execute();
+//        $statement->execute();
+        $statement->execute(array('p_id' => $post_id, 'id' => $_SESSION['id'], 'c1' => $criterium_1,
+                                'c2' => $criterium_2, 'c3' => $criterium_3, 'ol' => $overall, 'text' => $text));
     }
 
     /**
@@ -211,10 +235,13 @@ class Model {
      * @param $text
      */
     public function update_review($criterium_1, $criterium_2, $criterium_3, $overall, $post_id, $text) {
-        $sql = "UPDATE reviews SET criterium1=$criterium_1, criterium2=$criterium_2, criterium3=$criterium_3,
-                overall=$overall, text=\"$text\" WHERE reviewer=".$_SESSION['id']." AND post=$post_id";
+//        $sql = "UPDATE reviews SET criterium1=$criterium_1, criterium2=$criterium_2, criterium3=$criterium_3,
+//                overall=$overall, text=\"$text\" WHERE reviewer=".$_SESSION['id']." AND post=$post_id";
+        $sql = "UPDATE reviews SET criterium1=:c1, criterium2=:c2, criterium3=:c3,
+                overall=:ol, text=:text WHERE reviewer=:id AND post=:p_id";
         $statement = $this->db->prepare($sql);
-        $statement->execute();
+        $statement->execute(array('c1' => $criterium_1, 'c2' => $criterium_2, 'c3' => $criterium_3, 'ol' => $overall,
+                                'text' => $text, 'p_id' => $post_id));
     }
 
     /**
@@ -269,9 +296,10 @@ class Model {
      * @param $p_id
      */
     public function assign_reviewer($r_id, $p_id) {
-        $sql = "INSERT INTO review_queue(reviewer, post) VALUES ($r_id, $p_id)";
+//        $sql = "INSERT INTO review_queue(reviewer, post) VALUES ($r_id, $p_id)";
+        $sql = "INSERT INTO review_queue(reviewer, post) VALUES (:r_id, :p_id)";
         $statement = $this->db->prepare($sql);
-        $statement->execute();
+        $statement->execute(array('r_id' => $r_id, 'p_id' => $p_id));
     }
 
     /**
@@ -311,8 +339,10 @@ class Model {
      */
     public function publish_post($p_id) {
         $sql = "UPDATE posts SET published=1, state=3 WHERE id=$p_id";
+//        $sql = "UPDATE posts SET published=1, state=3 WHERE id=:p_id";
         $statement = $this->db->prepare($sql);
         $statement->execute();
+//        $statement->execute(array('p_id' => $p_id));
     }
 
     /**
