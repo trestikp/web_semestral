@@ -42,7 +42,7 @@ class R_mngmnt extends Controller {
             return $html;
         }
 
-        $html .= "\n<table class='table table-striped'>\n<tbody>\n";
+        $html .= "\n<table class='table table-striped table-borderless'>\n<tbody>\n";
 
         for ($i = 0; $i < count($posts); $i++) {
             $this->objs[$i] = new ReviewManagment($posts[$i]['id'], $posts[$i]['title'],
@@ -71,7 +71,7 @@ class R_mngmnt extends Controller {
      * @return string html table of review overview
      */
     function construct_sub_table($reviews) {
-        $html = "\n<table>
+        $html = "\n<table class='table-sm'>
                     <tr>".
 //                       <th>recenzent</th>
                        "<th>jaz.</th>
@@ -86,9 +86,15 @@ class R_mngmnt extends Controller {
                         "<td>" . $review['criterium1'] . "</td>
                         <td>" . $review['criterium2'] . "</td>
                         <td>" . $review['criterium3'] . "</td>
-                        <td>" . $review['overall'] . "</td>
-                        <td><a href='show_review/".$review['id']."'>Zobrazit</a></td>
-                    </tr>";
+                        <td>" . $review['overall'] . "</td>".
+//                        <td><a href='' class='show-review' id='r_show_".$review['id']."'>Zobrazit</a></td>
+                "<td><button class='button-link show-review' name='r_show_".$review['id']."'>Zobrazit</button></td>"
+                    ."</tr>
+                      <tr hidden>
+                        <td>
+                            <span class='r_shower_".$review['id']."'>text</span>
+                        </td>
+                      </tr>";
         }
 
          $html .= "</table>";
@@ -100,11 +106,10 @@ class R_mngmnt extends Controller {
      * Action to show full review from the subtable
      */
     public function show_review() {
-        $review = $this->model->get_review_by_id($this->url_params[0]);
+        $id = $_POST['r_id'];
+        $review = $this->model->get_review_by_id($id);
 
-
-//        $this->params['obsah'] = $review['text'];
-//        $this->render();
+        echo $review['text'];
     }
 
     /**
@@ -121,11 +126,17 @@ class R_mngmnt extends Controller {
             $cnt++;
         }
 
+        $html = "<table>\n";
         if ($cnt == 0) {
-            $html = "<table><tr><th>Celkový<br>průměr</th></tr><tr><td>---</td></tr></table>";
+            $html .= "<tr></tr>\n
+                      <tr><th>Celkový průměr</th></tr>\n
+                      <tr><td>---</td></tr>\n
+                      <tr></tr>\n";
         } else {
-            $html = "<table><tr><th>Celkový<br>průměr</th></tr><tr><td>".round(($sum / $cnt), 2)."</td></tr></table>";
+            $html .= "<tr><th>Celkový<br>průměr</th></tr>\n
+                     <tr><td>".round(($sum / $cnt), 2)."</td></tr>\n";
         }
+        $html .= "</table>\n";
 
         return $html;
     }
@@ -212,7 +223,7 @@ class ReviewManagment {
      * constructs the html of the accept button
      */
     function construct_accept() {
-        $this->accept_btn = "<input type='button' id='r_accept_".$this->p_id."_".$this->p_title."' value='Přijmout'
+        $this->accept_btn = "<input class='w-100 accept-button  ' type='button' id='r_accept_".$this->p_id."_".$this->p_title."' value='Přijmout'
                              class='r_manage_btn'>";
     }
 
@@ -220,7 +231,7 @@ class ReviewManagment {
      * constructs the html of the deny button
      */
     function construct_deny() {
-        $this->deny_btn = "<input type='button' id='r_deny_".$this->p_id."_".$this->p_title."' value='Zamítnout'
+        $this->deny_btn = "<input class='w-100 deny-button' type='button' id='r_deny_".$this->p_id."_".$this->p_title."' value='Zamítnout'
                            class='r_manage_btn'>";
     }
 

@@ -12,3 +12,17 @@ textarea {
 .selector {
     margin-top: 3px;
 }
+
+.deny-button {
+    margin-top: 2px;
+}
+
+.accept-button {
+    margin-bottom: 2px;
+}
+
+.button-link {
+    background: none;
+    border: none;
+    color: #007bff;
+}

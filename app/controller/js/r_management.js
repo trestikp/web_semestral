@@ -67,3 +67,22 @@ function get_title(str) {
 
     return str.substring(ptr + 1);
 }
+
+$(document).on('click', '.show-review', function () {
+   let name = $(this).attr('name');
+   let id = name.substring(7);
+   let tr = $(this).closest('tr');
+
+   tr.hidden = false;
+
+   // console.log($('#r_shower_' + id).text());
+
+   $.ajax("/web_semestral/public/r_mngmnt/show_review", {
+       data: {r_id: id},
+       type: "POST"
+   }).done(function (re) {
+       // shower.text(re);
+       // shower.textContent=re;
+       // console.log(re);
+   });
+});

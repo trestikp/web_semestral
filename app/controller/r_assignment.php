@@ -48,9 +48,9 @@ class R_assignment extends Controller
             $reviewers = $this->model->get_reviewers_of_post($item['id']);
             $html .= "<td>\n<table class='w-100'>\n";
             for ($i = 0; $i < 3; $i++) {
-                $html .= "<tr class='w-100'>\n";
+                $html .= "<tr>\n";
                 if ($i < count($reviewers)) {
-                    $html .= "<td class='w-100'>" . $reviewers[$i]['username'] . "</td>\n";
+                    $html .= "<td>" . $reviewers[$i]['username'] . "</td>\n";
                     switch ($reviewers[$i]['reviewed']) {
                         case 0:
                             $html .= "<td scope='row'>Zatím nehodnoceno</td>\n";

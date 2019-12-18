@@ -26,7 +26,7 @@ $(document).on('click', '#send_review', function () {
         data: $('#review_form').serialize(),
         type: "POST"
     }).done(function (re) {
-        console.log(re);
+        // console.log(re);
         window.location.replace("/web_semestral/public/review/success");
     });
 });
